@@ -7,19 +7,23 @@
           </div>
           <div class="form">
             <h3 @click="ShowRegister">创建账户</h3>
-            <div class="register" v-show="isShowRegister">
+            <transition name="fade">
+            <div class="register" :class ="{show: isShowRegister}">
               <input type="text" placeholder="用户名" v-model="register.username"></input>
-              <input type="password" placeholder="密码" v-model="register.password"></input>
+              <input type="password" placeholder="密码" v-model="register.password" @keyup="onRegister"></input>
               <p v-bind:class="{error: register.isError}">{{ register.notice }}</p>
               <div class="button" @click="onRegister">创建账号</div>
             </div>
+            </transition>
             <h3 @click="ShowLogin">登录</h3>
-            <div class="login" v-show="isShowLogin">
+            <transition name="fade">
+            <div class="login" :class ="{show: isShowLogin}">
               <input type="text" placeholder="用户名" v-model="login.username"></input>
-              <input type="password" placeholder="密码" v-model="login.password"></input>
+              <input type="password" placeholder="密码" v-model="login.password" @keyup="onLogin"></input>
               <p v-bind:class="{error: login.isError}">{{ login.notice }}</p>
               <div class="button" @click="onLogin">登录</div>
             </div>
+            </transition>
           </div>
         </div>
       </div>
@@ -127,7 +131,7 @@ export default {
       .form {
         width: 270px;
         border-left: 1px solid #ccc;
-
+        overflow: hidden;
         h3 {
           padding: 10px 20px;
           border-top: 1px solid #eee;
@@ -135,16 +139,21 @@ export default {
           font-weight: normal;
           text-align: center;
           cursor: pointer;
-
+          margin-top: -1px;
           &:nth-of-type(2) {
             border-bottom: 1px solid #eee;
           }
         }
 
         .login, .register {
-          padding: 10px 20px;
+          padding: 0 20px;
           border-top: 1px solid #eee;
-
+          height: 0;
+          overflow: hidden;
+          transition: height .4s;
+          &.show {
+            height: 193px;
+          }
           input {
             display: block;
             width: 100%;
