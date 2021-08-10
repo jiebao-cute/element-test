@@ -1,5 +1,6 @@
 <template>
   <div class="sidebar">
+    <avatar/>
     <div class="icons">
       <router-link to="/note/1" title="笔记">
         <svg class='iconfont icon-note'>
@@ -26,42 +27,57 @@
 </template>
 
 <script>
-export default {}
+import avatar from '@/components/common/Avatar.vue'
+
+export default {
+  name: 'sidebar',
+  components: {
+    avatar
+  }
+}
 </script>
 
-<style scoped>
-.icons{
-  margin-top: 20px;
-  display: flex;
-  flex-direction:column
-}
-.icons a {
-  padding: 6px 0;
-  display: block;
-}
-.icons .router-link-active {
-  background-color: #5e6266;
-}
-.iconfont {
-  width: 2em;
-  height: 2em;
-  fill: currentColor;
-  overflow: hidden;
-  color: #fff
-}
-
+<style lang="less" scoped>
 .sidebar {
   position: relative;
   width: 56px;
   text-align: center;
   background-color: #2c333c;
-}
-.logout {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  text-align: center;
-  cursor: pointer;
 
+  .icons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+
+    a {
+      padding: 6px 0;
+      display: block;
+      .iconfont {
+        width: 2em;
+        height: 2em;
+        fill: currentColor;
+        overflow: hidden;
+        color: #fff
+      }
+    }
+    .router-link-active {
+      background-color: #5e6266;
+    }
+  }
+
+  .logout {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    .iconfont{
+      width: 2em;
+      height: 2em;
+      fill: currentColor;
+      overflow: hidden;
+      color: #fff
+    }
+  }
 }
 </style>
