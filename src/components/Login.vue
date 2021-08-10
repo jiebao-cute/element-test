@@ -128,7 +128,7 @@ export default {
 
       .main {
         flex: 1;
-        background: #f7f7f7 url(//iconfont.alicdn.com/t/6413d11a-1905-4b9e-bba5-6fa2794723c0.png) center center no-repeat;
+        background: #f7f7f7 url(../assets/icons/kanshu3.svg) center center no-repeat;
         background-size: contain;
       }
 
