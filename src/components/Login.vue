@@ -8,25 +8,25 @@
           <div class="form">
             <h3 @click="ShowRegister">创建账户</h3>
             <transition name="fade">
-            <div class="register" :class ="{show: isShowRegister}">
-              <form>
-              <input type="text" placeholder="用户名" v-model="register.username" ></input>
-              <input type="password" placeholder="密码" autocomplete=“off” v-model="register.password" ></input>
-              </form>
-              <p v-bind:class="{error: register.isError}">{{ register.notice }}</p>
-              <div class="button" @click="onRegister">创建账号</div>
-            </div>
+              <div class="register" :class="{show: isShowRegister}">
+                <form>
+                  <input type="text" placeholder="用户名" v-model="register.username"></input>
+                  <input type="password" placeholder="密码" autocomplete=“off” v-model="register.password"></input>
+                </form>
+                <p v-bind:class="{error: register.isError}">{{ register.notice }}</p>
+                <div class="button" @click="onRegister">创建账号</div>
+              </div>
             </transition>
             <h3 @click="ShowLogin">登录</h3>
             <transition name="fade">
-            <div class="login" :class ="{show: isShowLogin}">
-              <form>
-              <input type="text" placeholder="用户名" v-model="login.username"></input>
-              <input type="password" placeholder="密码" autocomplete=“off” v-model="login.password" ></input>
-              </form>
-              <p v-bind:class="{error: login.isError}">{{ login.notice }}</p>
-              <div class="button" @click="onLogin" >登录</div>
-            </div>
+              <div class="login" :class="{show: isShowLogin}">
+                <form>
+                  <input type="text" placeholder="用户名" v-model="login.username"></input>
+                  <input type="password" placeholder="密码" autocomplete=“off” v-model="login.password"></input>
+                </form>
+                <p v-bind:class="{error: login.isError}">{{ login.notice }}</p>
+                <div class="button" @click="onLogin">登录</div>
+              </div>
             </transition>
           </div>
         </div>
@@ -136,6 +136,7 @@ export default {
         width: 270px;
         border-left: 1px solid #ccc;
         overflow: hidden;
+
         h3 {
           padding: 10px 20px;
           border-top: 1px solid #eee;
@@ -144,6 +145,7 @@ export default {
           text-align: center;
           cursor: pointer;
           margin-top: -1px;
+
           &:nth-of-type(2) {
             border-bottom: 1px solid #eee;
           }
@@ -155,9 +157,11 @@ export default {
           height: 0;
           overflow: hidden;
           transition: height .4s;
+
           &.show {
             height: 193px;
           }
+
           input {
             display: block;
             width: 100%;

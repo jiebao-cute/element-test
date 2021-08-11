@@ -31,9 +31,7 @@ import avatar from '@/components/common/Avatar.vue'
 
 export default {
   name: 'sidebar',
-  components: {
-    avatar
-  }
+  components: { avatar }
 }
 </script>
 
