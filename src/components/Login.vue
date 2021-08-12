@@ -36,13 +36,18 @@
 </template>
 
 <script>
-import request from "../helpers/request";
-request('/auth')
-  .then(
-    data=>{
-      console.log(data)
-    }
-  )
+import Auth from "../apis/auth.js";
+
+Auth.getInfo().then((data) => {
+  console.log(data)
+})
+
+// request('/auth')
+//   .then(
+//     data=>{
+//       console.log(data)
+//     }
+//   )
 export default {
   name: 'Login',
   data() {
@@ -86,14 +91,12 @@ export default {
       this.register.isError = false;
       this.register.notice = '';
       alert(`"用户名："${this.register.username} + "密码：" ${this.register.password}`)
-      request('/auth/register','POST',
-        {username:this.register.username,
-          password:this.register.password})
-        .then(
-          data=>{
-            console.log(data)
-          }
-        )
+      Auth.register({
+        username: this.register.username,
+        password: this.register.password
+      }).then((data) => {
+          console.log(data)
+        })
     },
     onLogin() {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.login.username)) {
@@ -109,14 +112,22 @@ export default {
       this.login.isError = false;
       this.login.notice = '';
       alert(`"用户名："${this.login.username} + "密码：" ${this.login.password}`)
-      request('/auth/login','POST',
-        {username:this.login.username,
-          password: this.login.password})
-        .then(
-          data=>{
-            console.log(data)
-          }
-        )
+      // request('/auth/login', 'POST',
+      //   {
+      //     username: this.login.username,
+      //     password: this.login.password
+      //   })
+      //   .then(
+      //     data => {
+      //       console.log(data)
+      //     }
+      //   )
+      Auth.login({
+        username: this.login.username,
+        password: this.login.password
+      }).then((data)=>{
+        console.log(data)
+      })
     }
   }
 }
