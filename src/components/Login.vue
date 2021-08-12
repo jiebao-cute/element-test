@@ -37,7 +37,12 @@
 
 <script>
 import request from "../helpers/request";
-
+request('/auth')
+  .then(
+    data=>{
+      console.log(data)
+    }
+  )
 export default {
   name: 'Login',
   data() {
