@@ -10,7 +10,7 @@
     </header>
     <main>
       <div class="layout">
-        <h3>笔记列表</h3>
+        <h3>笔记列表(10)</h3>
         <div class="book-list">
           <a href="#" class="notebook">
             <div>
@@ -48,6 +48,9 @@
 
 <script>
 import Auth from "../apis/auth.js";
+import Notebooks from "../apis/notebooks"
+
+Window.notebooks = Notebooks
 
 export default {
   name: 'NoteboonList',
