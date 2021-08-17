@@ -6,6 +6,8 @@
 
 <script>
 import Auth from "@/apis/auth.js";
+import Bus from "@/helpers/bus.js"
+
 export default {
   data() {
     return {
@@ -13,6 +15,9 @@ export default {
     }
   },
   created() {
+    Bus.$on('userInfo',user => {
+      this.username = user.username
+    })
     Auth.getInfo()
       .then(res=>{
         if(res.isLogin){
