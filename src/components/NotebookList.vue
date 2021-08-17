@@ -9,12 +9,20 @@
 </template>
 
 <script>
+import Auth from "../apis/auth.js";
 export default {
   name: 'NoteboonList',
   data () {
     return {
       msg: '笔记本列表'
     }
+  },
+  created() {
+    Auth.getInfo().then(res=>{
+      if(!res.isLogin){
+        this.$router.push({ path : '/'})
+      }
+    })
   }
 }
 </script>
