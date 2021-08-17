@@ -38,9 +38,9 @@
 <script>
 import Auth from "../apis/auth.js";
 
-Auth.getInfo().then((data) => {
-  console.log(data)
-})
+// Auth.getInfo().then((data) => {
+//   console.log(data)
+// })
 
 // request('/auth')
 //   .then(
