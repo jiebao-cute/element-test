@@ -109,8 +109,7 @@ export default {
         this.login.notice = '密码长度为6~16个字符'
         return
       }
-      this.login.isError = false;
-      this.login.notice = '';
+
       alert(`"用户名："${this.login.username} + "密码：" ${this.login.password}`)
       // request('/auth/login', 'POST',
       //   {
@@ -127,6 +126,12 @@ export default {
         password: this.login.password
       }).then((data)=>{
         console.log(data)
+        this.login.isError = false;
+        this.login.notice = '';
+        this.$router.push({path: 'notebooks'})
+      }).catch(data=>{
+        this.login.isError = true;
+        this.login.notice = data.notice;
       })
     }
   }
