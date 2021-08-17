@@ -61,8 +61,8 @@ export default {
       padding: 6px 0;
       display: block;
       .iconfont {
-        width: 2em;
-        height: 2em;
+        width: 1.5em;
+        height: 1.5em;
         fill: currentColor;
         overflow: hidden;
         color: #fff
@@ -80,8 +80,8 @@ export default {
     text-align: center;
     cursor: pointer;
     .iconfont{
-      width: 2em;
-      height: 2em;
+      width: 1.8em;
+      height: 1.8em;
       fill: currentColor;
       overflow: hidden;
       color: #fff
