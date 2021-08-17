@@ -88,15 +88,19 @@ export default {
         this.register.notice = '密码长度为6~16个字符'
         return
       }
-      this.register.isError = false;
-      this.register.notice = '';
-      alert(`"用户名："${this.register.username} + "密码：" ${this.register.password}`)
+      console.log(`"用户名："${this.register.username} + "密码：" ${this.register.password}`)
       Auth.register({
         username: this.register.username,
         password: this.register.password
       }).then((data) => {
-          console.log(data)
-        })
+        console.log(data)
+        this.register.isError = false;
+        this.register.notice = '';
+        this.$router.push({path: 'notebooks'})
+      }).catch(data => {
+        this.register.isError = true;
+        this.register.notice = data.msg
+      })
     },
     onLogin() {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.login.username)) {
@@ -110,7 +114,7 @@ export default {
         return
       }
 
-      alert(`"用户名："${this.login.username} + "密码：" ${this.login.password}`)
+      console.log(`"用户名："${this.login.username} + "密码：" ${this.login.password}`)
       // request('/auth/login', 'POST',
       //   {
       //     username: this.login.username,
@@ -124,14 +128,14 @@ export default {
       Auth.login({
         username: this.login.username,
         password: this.login.password
-      }).then((data)=>{
+      }).then((data) => {
         console.log(data)
         this.login.isError = false;
         this.login.notice = '';
         this.$router.push({path: 'notebooks'})
-      }).catch(data=>{
+      }).catch(data => {
         this.login.isError = true;
-        this.login.notice = data.notice;
+        this.login.notice = data.msg;
       })
     }
   }
