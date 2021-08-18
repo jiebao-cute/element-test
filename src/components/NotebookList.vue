@@ -12,7 +12,7 @@
       <div class="layout">
         <h3>笔记列表({{notebooks.length}})</h3>
         <div class="book-list">
-          <router-link to="id" class="notebook" v-for="notebooks  in notebooks" >
+          <router-link to="id" class="notebook" v-for="notebooks  in notebooks" :key="notebooks.id">
             <div>
               <span>
               <svg class='iconfont icon-notebook'>
