@@ -14,7 +14,7 @@ export default {
         res.data = res.data.sort(function (a,b) {
           return a.createdAt < b.createdAt ? 1 : -1
         })
-        res.data.forEach(notebook=> {
+        res.data.forEach(notebook=> {//后台时间的处理，只有刷新页面时才有
          notebook.friendlycreatedAt = friendlyDate(notebook.createdAt)
         })
         resolve(res)

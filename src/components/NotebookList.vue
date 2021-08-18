@@ -35,7 +35,7 @@
 <script>
 import Auth from "../apis/auth.js";
 import Notebooks from "../apis/notebooks"
-
+import {friendlyDate} from "../helpers/util";
 
 Window.notebooks = Notebooks
 
@@ -55,6 +55,7 @@ export default {
       }
       Notebooks.addNoteBook({title}).then(res=>{
         console.log(res)
+        res.data.friendlycreatedAt = friendlyDate(res.data.createdAt)//UI上面显示的时间
         this.notebooks.unshift(res.data)
         alert(res.msg)
       })
