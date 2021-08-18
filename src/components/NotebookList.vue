@@ -1,7 +1,7 @@
 <template>
   <div id="notebook-list">
     <header>
-      <a href="#" class="btn" @click="onCreat">
+      <a href="#" class="btn" @click.prevent="onCreat">
         <svg class='iconfont icon-plus'>
           <use xlink:href="#icon-jia"/>
         </svg>
@@ -12,7 +12,7 @@
       <div class="layout">
         <h3>笔记列表({{notebooks.length}})</h3>
         <div class="book-list">
-          <router-link to="id" class="notebook" v-for="notebooks  in notebooks" key="notebooks.id">
+          <router-link to="id" class="notebook" v-for="notebooks  in notebooks" >
             <div>
               <span>
               <svg class='iconfont icon-notebook'>
@@ -21,8 +21,8 @@
                 </span>
               {{notebooks.title}}
               <span>{{notebooks.noteCounts}}</span>
-              <span class="action" @click="onEdit">编辑</span>
-              <span class="action" @click="onDelete">删除</span>
+              <span class="action" @click.stop.prevent="onEdit(notebooks)">编辑</span>
+              <span class="action" @click.stop.prevent="onDelete(notebooks)">删除</span>
               <span class="data">3天前</span>
             </div>
           </router-link>
@@ -49,11 +49,13 @@ export default {
     onCreat(){
       console.log('oncreate...')
     },
-    onEdit(){
+    onEdit(notebooks){
       console.log('onEdit...')
+      console.log(notebooks)
     },
-    onDelete(){
+    onDelete(notebooks){
       console.log('onDelete...')
+      console.log(notebooks)
     }
   },
   created() {
