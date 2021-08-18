@@ -47,7 +47,16 @@ export default {
   },
   methods:{
     onCreat(){
-      console.log('oncreate...')
+      let title = window.prompt('创建笔记本')
+      if (title.trim() === '' ){
+        alert('笔记名不能为空')
+        return
+      }
+      Notebooks.addNoteBook({title}).then(res=>{
+        console.log(res)
+        alert(res.msg)
+        this.notebooks.unshift(res.data)
+      })
     },
     onEdit(notebooks){
       console.log('onEdit...')
