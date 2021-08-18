@@ -1,7 +1,7 @@
 <template>
   <div id="notebook-list">
     <header>
-      <a href="#" class="btn">
+      <a href="#" class="btn" @click="onCreat">
         <svg class='iconfont icon-plus'>
           <use xlink:href="#icon-jia"/>
         </svg>
@@ -10,36 +10,22 @@
     </header>
     <main>
       <div class="layout">
-        <h3>笔记列表(10)</h3>
+        <h3>笔记列表({{notebooks.length}})</h3>
         <div class="book-list">
-          <a href="#" class="notebook">
+          <router-link to="id" class="notebook" v-for="notebooks  in notebooks" key="notebooks.id">
             <div>
               <span>
               <svg class='iconfont icon-notebook'>
                 <use xlink:href="#icon-biji"/>
               </svg>
                 </span>
-              笔记标题1
-              <span>3</span>
-              <span class="action">编辑</span>
-              <span class="action">删除</span>
+              {{notebooks.title}}
+              <span>{{notebooks.noteCounts}}</span>
+              <span class="action" @click="onEdit">编辑</span>
+              <span class="action" @click="onDelete">删除</span>
               <span class="data">3天前</span>
             </div>
-          </a>
-          <a href="#" class="notebook">
-            <div>
-              <span>
-              <svg class='iconfont icon-notebook'>
-                <use xlink:href="#icon-biji"/>
-              </svg>
-              </span>
-              笔记标题2
-              <span>3</span>
-              <span class="action">编辑</span>
-              <span class="action">删除</span>
-              <span class="data">5天前</span>
-            </div>
-          </a>
+          </router-link>
         </div>
       </div>
     </main>
@@ -53,10 +39,21 @@ import Notebooks from "../apis/notebooks"
 Window.notebooks = Notebooks
 
 export default {
-  name: 'NoteboonList',
+  name: 'NotebookList',
   data() {
     return {
-      msg: '笔记本列表'
+      notebooks: []
+    }
+  },
+  methods:{
+    onCreat(){
+      console.log('oncreate...')
+    },
+    onEdit(){
+      console.log('onEdit...')
+    },
+    onDelete(){
+      console.log('onDelete...')
     }
   },
   created() {
@@ -64,6 +61,9 @@ export default {
       if (!res.isLogin) {
         this.$router.push({path: '/'})
       }
+    })
+    Notebooks.getAll().then(res=>{
+      this.notebooks = res.data
     })
   }
 }
@@ -83,13 +83,15 @@ export default {
     font-size: 12px;
     color: #666;
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 30px;
+    align-items: center;
+    padding: 5px 10px;
   }
   .btn .iconfont{
     font-size: 12px;
   }
   header {
-    padding: 12px;
+    padding: 14px;
     border-bottom: 1px solid #ccc;
   }
   main {
