@@ -23,7 +23,7 @@
               <span>{{notebooks.noteCounts}}</span>
               <span class="action" @click.stop.prevent="onEdit(notebooks)">编辑</span>
               <span class="action" @click.stop.prevent="onDelete(notebooks)">删除</span>
-              <span class="data">{{notebooks.createdAt}}</span>
+              <span class="data">{{notebooks.friendlycreatedAt}}</span>
             </div>
           </router-link>
         </div>
@@ -35,6 +35,7 @@
 <script>
 import Auth from "../apis/auth.js";
 import Notebooks from "../apis/notebooks"
+
 
 Window.notebooks = Notebooks
 

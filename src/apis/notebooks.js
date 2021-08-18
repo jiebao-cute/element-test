@@ -1,5 +1,5 @@
 import request from "../helpers/request";
-
+import {friendlyDate} from "../helpers/util"
 const URL = {
   GET:'/notebooks',
   ADD:'/notebooks',
@@ -11,7 +11,12 @@ export default {
   getAll(){
     return new Promise((resolve, reject)=>{
       return request(URL.GET).then(res=>{
-        res.data = res.data.sort((notebook1,notebook2)=> notebook1.createdAt < notebook2.createdAt)
+        res.data = res.data.sort(function (a,b) {
+          return a.createdAt < b.createdAt ? 1 : -1
+        })
+        res.data.forEach(notebook=> {
+         notebook.friendlycreatedAt = friendlyDate(notebook.createdAt)
+        })
         resolve(res)
       }).catch(err=>{
         reject(err)
