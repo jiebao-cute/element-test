@@ -54,21 +54,27 @@ export default {
       }
       Notebooks.addNoteBook({title}).then(res=>{
         console.log(res)
-        alert(res.msg)
         this.notebooks.unshift(res.data)
+        alert(res.msg)
       })
     },
     onEdit(notebooks){
       let title = window.prompt('修改标题',notebooks.title)
       Notebooks.updateNotebook(notebooks.id,{title}).then(res=>{
         console.log(res)
-        alert(res.msg)
         notebooks.title = title
+        alert(res.msg)
       })
     },
     onDelete(notebooks){
-      console.log('onDelete...')
-      console.log(notebooks)
+      let confirm = window.confirm('你确定要删除吗？')
+      if(confirm){
+        Notebooks.deleteNotebook(notebooks.id).then(res=>{//通知服务器删除
+          console.log(res)
+          this.notebooks.splice(this.notebooks.indexOf(notebooks),1)//通知UI删除
+          alert(res.msg)
+        })
+      }
     }
   },
   created() {
