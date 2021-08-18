@@ -59,8 +59,12 @@ export default {
       })
     },
     onEdit(notebooks){
-      console.log('onEdit...')
-      console.log(notebooks)
+      let title = window.prompt('修改标题',notebooks.title)
+      Notebooks.updateNotebook(notebooks.id,{title}).then(res=>{
+        console.log(res)
+        alert(res.msg)
+        notebooks.title = title
+      })
     },
     onDelete(notebooks){
       console.log('onDelete...')
