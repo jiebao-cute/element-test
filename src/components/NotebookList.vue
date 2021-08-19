@@ -58,11 +58,8 @@ export default {
       }).then(res => {
         res.data.friendlycreatedAt = friendlyDate(res.data.createdAt)//UI上面显示的时间
         this.notebooks.unshift(res.data)
-        this.$message({
-          type: 'success',
-          message: res.msg
-        })
-      })
+        this.$message.success(res.msg)
+      }).catch(e=>e)
     },
     onEdit(notebooks) {
       let title = ''
@@ -70,17 +67,15 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputPattern: /^.{1,30}$/,
+        inputValue: notebooks.title,
         inputErrorMessage: '标题不能为空，且不能超过三十个字'
       }).then(({value}) => {
         title = value
         return Notebooks.updateNotebook(notebooks.id, {title})
       }).then(res => {
         notebooks.title = title
-        this.$message({
-          type: 'success',
-          message: res.msg
-        })
-      })
+        this.$message.success(res.msg)
+      }).catch(e=>e)
     },
     onDelete(notebooks) {
       this.$confirm('此操作将永久删除该文件, 你确定要删除该笔记吗?', '提示', {
@@ -94,7 +89,7 @@ export default {
         this.$message({
           type: 'success',
           message: res.msg,
-        })})
+        })}).catch(e=>e)
       }
   },
   created() {
