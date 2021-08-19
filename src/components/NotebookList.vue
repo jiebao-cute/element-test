@@ -62,12 +62,7 @@ export default {
           type: 'success',
           message: res.msg
         })
-      }).catch((res) => {
-        this.$message({
-          type: 'error',
-          message: '取消创建'
-        });
-      });
+      })
     },
     onEdit(notebooks) {
       let title = ''
@@ -85,12 +80,7 @@ export default {
           type: 'success',
           message: res.msg
         })
-      }).catch((res) => {
-        this.$message({
-          type: 'error',
-          message: '取消更新'
-        });
-      });
+      })
     },
     onDelete(notebooks) {
       this.$confirm('此操作将永久删除该文件, 你确定要删除该笔记吗?', '提示', {
@@ -178,9 +168,13 @@ export default {
   main .book-list span {
     font-size: 12px;
     font-weight: bold;
+    height: 20px;
     color: #b3c0c8;
   }
 
+  main .action:hover {
+    color: #333333;
+  }
   main .data,
   main .action {
     float: right;
