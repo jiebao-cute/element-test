@@ -151,7 +151,9 @@ export default {
   }
 
   main {
+    max-height: 540px;
     padding: 30px 40px;
+    overflow-y: scroll;
   }
 
   .layout {

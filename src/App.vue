@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-       <sidebar/>
-        <router-view></router-view>
+       <sidebar class="s-sidebar"/>
+        <router-view class="wrapper"></router-view>
   </div>
 </template>
 
@@ -17,6 +17,9 @@ export default {
 </script>
 
 <style lang="less">
+.s-sidebar{
+ position: fixed;
+}
 *{
   box-sizing: border-box;
   margin: 0;
