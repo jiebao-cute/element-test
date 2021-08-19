@@ -2,7 +2,7 @@
   <div class="sidebar">
     <avatar/>
     <div class="icons">
-      <router-link to="/note/1" title="笔记">
+      <router-link to="/note" title="笔记">
         <svg class='iconfont icon-note'>
           <use xlink:href="#icon-biji"/>
         </svg>
@@ -12,7 +12,7 @@
           <use xlink:href="#icon-dianhua"/>
         </svg>
       </router-link>
-      <router-link to="/trash/2" title="回收站">
+      <router-link to="/trash" title="回收站">
         <svg class="iconfont icon-trash">
           <use xlink:href="#icon-huishou"/>
         </svg>
