@@ -6,17 +6,6 @@
           <div class="main">
           </div>
           <div class="form">
-            <h3 @click="ShowRegister">创建账户</h3>
-            <transition name="fade">
-              <div class="register" :class="{show: isShowRegister}">
-                <form>
-                  <input type="text" placeholder="用户名" v-model="register.username"></input>
-                  <input type="password" placeholder="密码" autocomplete=“off” v-model="register.password"></input>
-                </form>
-                <p v-bind:class="{error: register.isError}">{{ register.notice }}</p>
-                <div class="button" @click="onRegister">创建账号</div>
-              </div>
-            </transition>
             <h3 @click="ShowLogin">登录</h3>
             <transition name="fade">
               <div class="login" :class="{show: isShowLogin}">
@@ -26,6 +15,17 @@
                 </form>
                 <p v-bind:class="{error: login.isError}">{{ login.notice }}</p>
                 <div class="button" @click="onLogin">登录</div>
+              </div>
+            </transition>
+            <h3 @click="ShowRegister">创建账户</h3>
+            <transition name="fade">
+              <div class="register" :class="{show: isShowRegister}">
+                <form>
+                  <input type="text" placeholder="用户名" v-model="register.username"></input>
+                  <input type="password" placeholder="密码" autocomplete=“off” v-model="register.password"></input>
+                </form>
+                <p v-bind:class="{error: register.isError}">{{ register.notice }}</p>
+                <div class="button" @click="onRegister">创建账号</div>
               </div>
             </transition>
           </div>
@@ -52,8 +52,8 @@ export default {
   name: 'Login',
   data() {
     return {
-      isShowLogin: false,
-      isShowRegister: true,
+      isShowLogin: true,
+      isShowRegister: false,
       register: {
         username: '',
         password: '',
