@@ -1,0 +1,113 @@
+<template>
+<div class="note-sidebar">
+  <span class=" btn add-note">添加笔记</span>
+  <el-dropdown class="notebook-title" @command="handleCommand">
+  <span class="el-dropdown-link">
+    我的笔记1<i class="el-icon-arrow-down el-icon--right"></i>
+  </span>
+    <el-dropdown-menu slot="dropdown">
+      <el-dropdown-item command="trash">回收站</el-dropdown-item>
+      <el-dropdown-item command="trash">回收站</el-dropdown-item>
+    </el-dropdown-menu>
+  </el-dropdown>
+  <div class="menu">
+    <div>更新时间</div>
+    <div>标题</div>
+  </div>
+   <ul class="notes">
+     <li>
+       <router-link to="`/note?noteId=${note.id}`">
+         <span class="data">时间</span>
+         <span class="title">标题</span>
+       </router-link>
+     </li>
+   </ul>
+</div>
+</template>
+
+<script>
+
+export default {
+
+}
+</script>
+<style lang="less" scoped>
+.el-dropdown-link {
+  cursor: pointer;
+}
+.el-dropdown-menu__item{
+  width: 200px;
+}
+.note-sidebar {
+  position: relative;
+  width: 290px;
+  height: 100%;
+  border-right: 1px solid #cccccc;
+  background: #eeeeee;
+  .add-note {
+    position: absolute;
+    right: 5px;
+    top: 12px;
+    color: #666;
+    font-size: 12px;
+    padding: 2px 6px;
+    box-shadow: 0 0 2px 0 #ccc;
+    border: none;
+    z-index: 1;
+  }
+  .notebook-title{
+    font-size: 18px;
+    font-weight: normal;
+    color: #333;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    border-bottom: 1px solid #cccccc;
+    background-color: #f7f7f7;
+    display: block;
+  }
+  .menu {
+    div{
+      font-size: 12px;
+      padding: 2px 10px;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      flex: 1;
+    }
+    display: flex;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+  .iconfont{
+    font-size: 10px;
+  }
+  .notes {
+    li {
+
+      &:nth-child(odd) {
+        background-color: #f2f2f2;
+      }
+
+      a {
+        display: flex;
+        padding: 3px 0;
+        font-size: 12px;
+        border: 2px solid transparent;
+      }
+
+      .router-link-exact-active {
+        border: 2px solid #81c0f3;
+        border-radius: 3px;
+      }
+
+      span {
+        padding: 0 10px;
+        flex: 1;
+      }
+    }
+  }
+
+}
+</style>

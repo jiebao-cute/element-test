@@ -1,14 +1,15 @@
 <template>
   <div id="note-detail">
-    <h1>{{msg}} : {{ $route.params.noteId }}</h1>
+    <NoteSidebar/>
   </div>
 </template>
 
 <script>
 import Auth from "../apis/auth";
-
+import NoteSidebar from "./common/NoteSidebar";
 export default {
   name: 'NoteDetail',
+  components:{ NoteSidebar },
   data () {
     return {
       msg: '笔记详情页'
