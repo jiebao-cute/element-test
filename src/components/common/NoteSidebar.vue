@@ -1,11 +1,11 @@
 <template>
 <div class="note-sidebar">
   <span class=" btn add-note">添加笔记</span>
-  <el-dropdown class="notebook-title" @command="handleCommand">
+  <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
   <span class="el-dropdown-link">
     我的笔记1<i class="el-icon-arrow-down el-icon--right"></i>
   </span>
-    <el-dropdown-menu slot="dropdown">
+    <el-dropdown-menu slot="dropdown" >
       <el-dropdown-item command="trash">回收站</el-dropdown-item>
       <el-dropdown-item command="trash">回收站</el-dropdown-item>
     </el-dropdown-menu>
@@ -35,9 +35,10 @@ export default {
 .el-dropdown-link {
   cursor: pointer;
 }
-.el-dropdown-menu__item{
-  width: 200px;
+.el-dropdown-menu__item {
+  width: 240px;
 }
+
 .note-sidebar {
   position: relative;
   width: 290px;
