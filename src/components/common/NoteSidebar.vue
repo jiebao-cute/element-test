@@ -1,9 +1,9 @@
 <template>
 <div class="note-sidebar">
-  <span class=" btn add-note">添加笔记</span>
+  <span class=" btn add-note" @click="addNote">添加笔记</span>
   <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
-  <span class="el-dropdown-link">
-    我的笔记1<i class="el-icon-arrow-down el-icon--right"></i>
+  <span class="el-dropdown-link" >
+    {{curBook.title}}<i class="el-icon-arrow-down el-icon--right"></i>
   </span>
     <el-dropdown-menu slot="dropdown" >
       <el-dropdown-item :command="notebook.id" v-for="notebook in notebooks">{{notebook.title}}</el-dropdown-item>
@@ -48,12 +48,16 @@ export default {
             this.notes = res.data
           })
       }
+    },
+    addNote(){
+      console.log('1')
     }
   },
   created() {
    Notebooks.getAll()
      .then(res=>{
        this.notebooks = res.data
+       this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId)  || this.notebooks[0] || {}
      })
   }
 }
@@ -62,6 +66,13 @@ export default {
 <style lang="less" scoped>
 .el-dropdown-link {
   cursor: pointer;
+}
+.el-dropdown-selfdefine{
+  display: inline-block;
+  width: 150px ;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis
 }
 .el-dropdown-menu__item {
   width: 260px;
