@@ -1,8 +1,11 @@
 <template>
+<div id="note" class="detail">
+  <NoteSidebar/>
   <div id="note-detail">
-    <NoteSidebar/>
-
+   <h1>notebook : {{$route.query.notebookId}}</h1>
+    <h1>notebook : {{$route.query.noteId}}</h1>
   </div>
+</div>
 </template>
 
 <script>
@@ -27,7 +30,10 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  color: blue;
+#note{
+ display: flex;
+ align-items: stretch;
+  background-color: #ffffff;
+  flex: 1;
 }
 </style>
