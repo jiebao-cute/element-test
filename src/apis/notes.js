@@ -19,7 +19,7 @@ export default {
               return note
             })
            res.data.sort(function (a,b) {
-              return a.updatedAt < b.updatedAt ? 1 : -1
+              return a.updatedAt < b.updatedAt ? 1 : -1 //将时间从新到旧排序
             })
            resolve(res)
          }).catch(err=>{

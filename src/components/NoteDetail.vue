@@ -14,8 +14,8 @@
       <input type="text" placeholder="请在此输入标题...."></input>
     </div>
     <div class="editor">
-      <textarea  placeholder="输入内容, 支持 markdown 语法"></textarea>
-      <div class="preview markdown-body" > </div>
+      <textarea  v-show="true" placeholder="输入内容, 支持 markdown 语法"></textarea>
+      <div class="preview markdown-body" v-show="false"  v-html=""> </div>
     </div>
   </div>
 </div>
@@ -66,12 +66,14 @@ export default {
     height: 100%;
   }
   .note-bar{
-
+    background-color: #cccccc;
     padding: 4px 20px;
     border-bottom: 1px solid #eee;
+
     span {
+
       font-size: 12px;
-      color: #999;
+      color: #444444;
       margin-right: 4px;
     }
   }
@@ -80,6 +82,8 @@ export default {
     display: inline-block;
     width: 100%;
     border-top: 1px solid #eee;
+    border-right: none;
+    border-left: none;
     outline: none;
     font-size: 18px;
     padding: 10px 20px;
