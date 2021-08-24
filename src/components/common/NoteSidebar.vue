@@ -41,12 +41,13 @@ export default {
  },
   methods:{
     handleCommand(notebookId){
-      if(notebookId !== 'trash'){
-        notes.getAll({notebookId})
-          .then(res=>{
-            this.notes = res.data
-          })
+      if(notebookId === 'trash'){
+       return this.$router.push({path: '/trash'})
       }
+      notes.getAll({notebookId})
+        .then(res=>{
+          this.notes = res.data
+        })
     },
     addNote(){
       console.log('1')
