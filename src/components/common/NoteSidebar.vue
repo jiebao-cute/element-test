@@ -44,7 +44,6 @@ export default {
       if(notebookId !== 'trash'){
         notes.getAll({notebookId})
           .then(res=>{
-            console.log(res)
             this.notes = res.data
           })
       }
@@ -58,7 +57,10 @@ export default {
      .then(res=>{
        this.notebooks = res.data
        this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId)  || this.notebooks[0] || {}
-     })
+       return Notes.getAll({notebookId: this.curBook.id})
+     }).then(res=>
+     this.notes = res.data
+   )
   }
 }
 </script>
