@@ -6,7 +6,7 @@
     我的笔记1<i class="el-icon-arrow-down el-icon--right"></i>
   </span>
     <el-dropdown-menu slot="dropdown" >
-      <el-dropdown-item command="trash">回收站</el-dropdown-item>
+      <el-dropdown-item :command="notebook.id" v-for="notebook in notebooks">{{notebook.title}}</el-dropdown-item>
       <el-dropdown-item command="trash">回收站</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
@@ -14,11 +14,11 @@
     <div>更新时间</div>
     <div>标题</div>
   </div>
-   <ul class="notes">
+   <ul class="notes" v-for="note in notes">
      <li>
-       <router-link to="`/note?noteId=${note.id}`">
-         <span class="data">时间</span>
-         <span class="title">标题</span>
+       <router-link to="`/note?noteId=${note.id}`" >
+         <span class="data">{{note.updatedAtFriendly}}</span>
+         <span class="title">{{note.title}}</span>
        </router-link>
      </li>
    </ul>
@@ -26,17 +26,45 @@
 </template>
 
 <script>
+import Notebooks from '@/apis/notebooks'
+import Notes from '@/apis/notes'
+import notes from "../../apis/notes";
 
+window.Notes  = Notes
 export default {
-
+ data(){
+   return {
+     notebooks:[],
+     notes:[],
+     curBook: {}
+   }
+ },
+  methods:{
+    handleCommand(notebookId){
+      if(notebookId !== 'trash'){
+        notes.getAll({notebookId})
+          .then(res=>{
+            console.log(res)
+            this.notes = res.data
+          })
+      }
+    }
+  },
+  created() {
+   Notebooks.getAll()
+     .then(res=>{
+       this.notebooks = res.data
+     })
+  }
 }
 </script>
+
 <style lang="less" scoped>
 .el-dropdown-link {
   cursor: pointer;
 }
 .el-dropdown-menu__item {
-  width: 240px;
+  width: 260px;
 }
 
 .note-sidebar {

@@ -1,6 +1,7 @@
 <template>
   <div id="note-detail">
     <NoteSidebar/>
+
   </div>
 </template>
 
