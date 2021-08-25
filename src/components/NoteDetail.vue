@@ -14,7 +14,9 @@
       <input type="text" placeholder="请在此输入标题...."></input>
     </div>
     <div class="editor">
-      <textarea  v-show="true" placeholder="输入内容, 支持 markdown 语法"></textarea>
+      <textarea  v-show="true" placeholder="输入内容, 支持 markdown 语法">
+        currNOte的ID{{curNotes.id}}
+      </textarea>
       <div class="preview markdown-body" v-show="false"  v-html=""> </div>
     </div>
   </div>
@@ -40,7 +42,11 @@ export default {
       }
     })
   },
-
+  beforeRouteUpdate(to, from, next){
+    this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
+    console.log(this.curNotes)
+    next()
+  }
 
 }
 </script>
