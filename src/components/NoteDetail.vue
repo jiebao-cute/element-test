@@ -1,26 +1,29 @@
 <template>
-<div id="note" class="detail">
-  <NoteSidebar    @update:notes="val => notes = val"/>
-  <div class="note-detail">
-  <div class="note-bar">
-    <span>创建日期：{{curNotes.createdAtFriendly}}</span>
-    <span>更新日期：{{curNotes.updatedAtFriendly}}</span>
-    <span>已保存</span>
-    <svg class='iconfont icon-plus'>
-      <use xlink:href="#icon-huishou"/>
-    </svg>
-  </div>
-    <div class="note-title">
-      <input type="text" v-model="curNotes.title" placeholder="请在此输入标题...."></input>
-    </div>
-    <div class="editor">
-      <textarea  v-show="true" placeholder="输入内容, 支持 markdown 语法">
-        currNOte的ID{{curNotes.id}}
+  <div id="note" class="detail">
+    <NoteSidebar @update:notes="val => notes = val"/>
+    <div class="note-detail">
+      <div class="note-empty" v-show="!curNotes.id" >请选择或者创建笔记</div>
+      <div class="note-detail-ct" v-show="curNotes.id">
+      <div class="note-bar">
+        <span>创建日期：{{ curNotes.createdAtFriendly }}</span>
+        <span>更新日期：{{ curNotes.updatedAtFriendly }}</span>
+        <span>已保存</span>
+        <svg class='iconfont icon-plus'>
+          <use xlink:href="#icon-huishou"/>
+        </svg>
+      </div>
+      <div class="note-title">
+        <input type="text" v-model="curNotes.title" placeholder="请在此输入标题...."></input>
+      </div>
+      <div class="editor">
+      <textarea v-show="true" placeholder="输入内容, 支持 markdown 语法">
+        currNOte的ID{{ curNotes.id }}
       </textarea>
-      <div class="preview markdown-body" v-show="false"  v-html=""> </div>
+        <div class="preview markdown-body" v-show="false" v-html=""></div>
+      </div>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -30,24 +33,24 @@ import Bus from "@/helpers/bus.js"
 
 export default {
   name: 'NoteDetail',
-  components:{ NoteSidebar },
-  data () {
+  components: {NoteSidebar},
+  data() {
     return {
-      curNotes:[],
-      notes:[]
+      curNotes: [],
+      notes: []
     }
   },
   created() {
-    Auth.getInfo().then(res=>{
-      if(!res.isLogin){
-        this.$router.push({ path : '/'})
+    Auth.getInfo().then(res => {
+      if (!res.isLogin) {
+        this.$router.push({path: '/'})
       }
     })
-    Bus.$on('update:notes',val=>{
-      this.curNotes = val.find(note => note.id == this.$route.query.noteId)
+    Bus.$on('update:notes', val => {
+      this.curNotes = val.find(note => note.id == this.$route.query.noteId) || {}
     })
   },
-  beforeRouteUpdate(to, from, next){
+  beforeRouteUpdate(to, from, next) {
     this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
     next()
   }
@@ -56,12 +59,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#note{
- display: flex;
- align-items: stretch;
+#note {
+  display: flex;
+  align-items: stretch;
   background-color: #ffffff;
   flex: 1;
 }
+
 .iconfont {
   width: 1em;
   height: 1em;
@@ -71,18 +75,31 @@ export default {
   cursor: pointer;
 }
 
+.note-empty{
+  font-size: 50px;
+  color: #ccc;
+  text-align: center;
+  margin-top: 100px;
+  float: top;
+}
 .note-detail {
   flex: 1;
   display: flex;
   flex-direction: column;
+
   .note-detail-ct {
     height: 100%;
   }
-  .note-bar{
+
+  .note-bar {
     background-color: #cccccc;
     padding: 4px 20px;
     border-bottom: 1px solid #eee;
-
+    &:after {
+      content:'';
+      display: block;
+      clear: both;
+    }
     span {
 
       font-size: 12px;
@@ -90,27 +107,31 @@ export default {
       margin-right: 4px;
     }
   }
-  .note-title{
-  input{
-    display: inline-block;
-    width: 100%;
-    border-top: 1px solid #eee;
-    border-right: none;
-    border-left: none;
-    outline: none;
-    font-size: 18px;
-    padding: 10px 20px;
+
+  .note-title {
+    input {
+      display: inline-block;
+      width: 100%;
+      border-top: 1px solid #eee;
+      border-right: none;
+      border-left: none;
+      outline: none;
+      font-size: 18px;
+      padding: 10px 20px;
+    }
   }
-  }
-  .editor{
+
+  .editor {
     height: ~"calc(100% - 70px)";
     position: relative;
+
     textarea, .preview {
       position: absolute;
       width: 100%;
       height: 100%;
       padding: 20px;
     }
+
     textarea {
       border: none;
       resize: none;
