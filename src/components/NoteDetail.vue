@@ -1,6 +1,6 @@
 <template>
 <div id="note" class="detail">
-  <NoteSidebar/>
+  <NoteSidebar @update:notes="val => notes = val"/>
   <div class="note-detail">
   <div class="note-bar">
     <span>创建日期：4天前</span>
@@ -29,7 +29,8 @@ export default {
   components:{ NoteSidebar },
   data () {
     return {
-      msg: '笔记详情页'
+      curNotes:[],
+      notes:[]
     }
   },
   created() {
@@ -38,7 +39,9 @@ export default {
         this.$router.push({ path : '/'})
       }
     })
-  }
+  },
+
+
 }
 </script>
 

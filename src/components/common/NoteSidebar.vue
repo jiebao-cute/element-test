@@ -28,9 +28,8 @@
 <script>
 import Notebooks from '@/apis/notebooks'
 import Notes from '@/apis/notes'
-import notes from "../../apis/notes";
 
-window.Notes  = Notes
+
 export default {
  data(){
    return {
@@ -45,9 +44,10 @@ export default {
        return this.$router.push({path: '/trash'})
       }
       this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)
-      notes.getAll({notebookId})
+      Notes.getAll({notebookId})
         .then(res=>{
           this.notes = res.data
+          this.$emit('update:notes', this.notes)
         })
     },
     addNote(){
@@ -59,11 +59,12 @@ export default {
      .then(res=>{
        this.notebooks = res.data
        this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId)  || this.notebooks[0] || {}
-       return Notes.getAll({notebookId: this.curBook.id})
-     }).then(res=>
-     this.notes = res.data
+       return Notes.getAll({ notebookId: this.curBook.id })
+     }).then(res=>{
+    this.notes = res.data
+    this.$emit('update:notes', this.notes) }
    )
-  }
+  },
 }
 </script>
 
