@@ -13,10 +13,10 @@
         </svg>
       </div>
       <div class="note-title">
-        <input type="text" v-model="curNotes.title" placeholder="请在此输入标题...."></input>
+        <input type="text" v-model="curNotes.title"  @input="updateNote" placeholder="请在此输入标题...."></input>
       </div>
       <div class="editor">
-      <textarea v-show="true" placeholder="输入内容, 支持 markdown 语法">
+      <textarea v-show="true" v-model="curNotes.content"  @input="updateNote" placeholder="输入内容, 支持 markdown 语法">
         currNOte的ID{{ curNotes.id }}
       </textarea>
         <div class="preview markdown-body" v-show="false" v-html=""></div>
@@ -30,6 +30,8 @@
 import Auth from "../apis/auth";
 import NoteSidebar from "./common/NoteSidebar";
 import Bus from "@/helpers/bus.js"
+import Notes from '@/apis/notes'
+import Common from '@/helpers/common.js';
 
 export default {
   name: 'NoteDetail',
@@ -49,6 +51,15 @@ export default {
     Bus.$on('update:notes', val => {
       this.curNotes = val.find(note => note.id == this.$route.query.noteId) || {}
     })
+  },
+  methods:{
+    updateNote: Common.debounce(function (){
+      Notes.updateNote({ noteId: this.curNotes.id },
+        { title: this.curNotes.title, content: this.curNotes.content })
+        .then(res=>{
+          console.log(res)
+        })
+    },600)
   },
   beforeRouteUpdate(to, from, next) {
     this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
