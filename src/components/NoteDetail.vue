@@ -26,6 +26,8 @@
 <script>
 import Auth from "../apis/auth";
 import NoteSidebar from "./common/NoteSidebar";
+import Bus from "@/helpers/bus.js"
+
 export default {
   name: 'NoteDetail',
   components:{ NoteSidebar },
@@ -41,10 +43,12 @@ export default {
         this.$router.push({ path : '/'})
       }
     })
+    Bus.$on('update:notes',val=>{
+      this.curNotes = val.find(note => note.id == this.$route.query.noteId)
+    })
   },
   beforeRouteUpdate(to, from, next){
     this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
-    console.log(this.curNotes)
     next()
   }
 
