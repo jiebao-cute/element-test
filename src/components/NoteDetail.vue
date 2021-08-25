@@ -7,16 +7,16 @@
       <div class="note-bar">
         <span>创建日期：{{ curNotes.createdAtFriendly }}</span>
         <span>更新日期：{{ curNotes.updatedAtFriendly }}</span>
-        <span>已保存</span>
+        <span>{{this.statusText}}</span>
         <svg class='iconfont icon-plus'>
           <use xlink:href="#icon-huishou"/>
         </svg>
       </div>
       <div class="note-title">
-        <input type="text" v-model="curNotes.title"  @input="updateNote" placeholder="请在此输入标题...."></input>
+        <input type="text" v-model="curNotes.title"  @input="updateNote" placeholder="请在此输入标题...."  @keydown="statusText = '正在输入...'"></input>
       </div>
       <div class="editor">
-      <textarea v-show="true" v-model="curNotes.content"  @input="updateNote" placeholder="输入内容, 支持 markdown 语法">
+      <textarea v-show="true" v-model="curNotes.content"  @input="updateNote" placeholder="输入内容, 支持 markdown 语法" @keydown="statusText = '正在输入...'">
         currNOte的ID{{ curNotes.id }}
       </textarea>
         <div class="preview markdown-body" v-show="false" v-html=""></div>
@@ -39,7 +39,8 @@ export default {
   data() {
     return {
       curNotes: [],
-      notes: []
+      notes: [],
+      statusText: '笔记未改动',
     }
   },
   created() {
@@ -57,7 +58,9 @@ export default {
       Notes.updateNote({ noteId: this.curNotes.id },
         { title: this.curNotes.title, content: this.curNotes.content })
         .then(res=>{
-          console.log(res)
+          this.statusText = '已保存'
+        }).catch(res => {
+        this.statusText = '保存出错'
         })
     },600)
   },
