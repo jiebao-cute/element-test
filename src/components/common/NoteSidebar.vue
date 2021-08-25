@@ -31,7 +31,7 @@ import Notes from '@/apis/notes'
 
 
 export default {
- data(){
+  data(){
    return {
      notebooks:[],
      notes:[],

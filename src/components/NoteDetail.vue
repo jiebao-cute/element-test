@@ -1,17 +1,17 @@
 <template>
 <div id="note" class="detail">
-  <NoteSidebar @update:notes="val => notes = val"/>
+  <NoteSidebar    @update:notes="val => notes = val"/>
   <div class="note-detail">
   <div class="note-bar">
-    <span>创建日期：4天前</span>
-    <span>更新日期：1小时前</span>
+    <span>创建日期：{{curNotes.createdAtFriendly}}</span>
+    <span>更新日期：{{curNotes.updatedAtFriendly}}</span>
     <span>已保存</span>
     <svg class='iconfont icon-plus'>
       <use xlink:href="#icon-huishou"/>
     </svg>
   </div>
     <div class="note-title">
-      <input type="text" placeholder="请在此输入标题...."></input>
+      <input type="text" v-model="curNotes.title" placeholder="请在此输入标题...."></input>
     </div>
     <div class="editor">
       <textarea  v-show="true" placeholder="输入内容, 支持 markdown 语法">
