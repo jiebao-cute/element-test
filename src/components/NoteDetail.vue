@@ -2,13 +2,16 @@
   <div id="note" class="detail">
     <NoteSidebar @update:notes="val => notes = val"/>
     <div class="note-detail">
-      <div class="note-empty" v-show="!curNotes.id">请选择或者创建笔记</div>
+      <div class="note-empty" v-show="!curNotes.id">
+        <i class="el-icon-reading"></i>
+        在左侧选择或添加笔记
+      </div>
       <div class="note-detail-ct" v-show="curNotes.id">
         <div class="note-bar">
           <span>创建日期：{{ curNotes.createdAtFriendly }}</span>
           <span>更新日期：{{ curNotes.updatedAtFriendly }}</span>
           <span>{{ this.statusText }}</span>
-          <span >
+          <span>
           <el-popconfirm
             confirm-button-text='好的'
             cancel-button-text='不用了'
@@ -17,23 +20,25 @@
             title="确定删除笔记吗？删除后会放入回收站"
             @confirm="deleteNote"
           >
-         <el-button slot="reference" >
+         <el-button slot="reference">
            <svg class='iconfont icon-plus'>
              <use xlink:href="#icon-huishou"/>
             </svg></el-button>
           </el-popconfirm>
         </span>
+          <span @click="isShowPreview = !isShowPreview"> <i class="el-icon-edit"></i></span>
         </div>
         <div class="note-title">
           <input type="text" v-model="curNotes.title" @input="updateNote" placeholder="请在此输入标题...."
                  @keydown="statusText = '正在输入...'"></input>
         </div>
         <div class="editor">
-      <textarea v-show="true" v-model="curNotes.content" @input="updateNote" placeholder="输入内容, 支持 markdown 语法"
+      <textarea v-show="!isShowPreview" v-model="curNotes.content" @input="updateNote" placeholder="输入内容, 支持 markdown 语法"
                 @keydown="statusText = '正在输入...'">
-        currNOte的ID{{ curNotes.id }}
       </textarea>
-          <div class="preview markdown-body" v-show="false" v-html=""></div>
+          <div class="preview markdown-body" v-show="isShowPreview" v-html="previewContent">
+
+          </div>
         </div>
       </div>
     </div>
@@ -46,7 +51,9 @@ import NoteSidebar from "./common/NoteSidebar";
 import Bus from "@/helpers/bus.js"
 import Notes from '@/apis/notes'
 import Common from '@/helpers/common.js';
+import MarkdownIt from 'markdown-it'
 
+let md = new MarkdownIt()
 export default {
   name: 'NoteDetail',
   components: {NoteSidebar},
@@ -55,6 +62,7 @@ export default {
       curNotes: [],
       notes: [],
       statusText: '笔记未改动',
+      isShowPreview: false
     }
   },
   created() {
@@ -66,6 +74,11 @@ export default {
     Bus.$on('update:notes', val => {
       this.curNotes = val.find(note => note.id == this.$route.query.noteId) || {}
     })
+  },
+  computed:{
+    previewContent(){
+      return  md.render(this.curNotes.content || '')
+    }
   },
   methods: {
     updateNote: Common.debounce(function () {//不能用箭头函数，因为没有this
@@ -102,7 +115,14 @@ export default {
   background-color: #ffffff;
   flex: 1;
 }
-
+.el-icon-edit{
+  width: 1em;
+  height: 1em;
+  float: right;
+  margin-left: 6px;
+  font-size: 18px;
+  cursor: pointer;
+}
 .iconfont {
   width: 1em;
   height: 1em;
@@ -119,12 +139,14 @@ export default {
   margin-top: 100px;
   float: top;
 }
-.el-button{
+
+.el-button {
   background-color: #cccccc;
   border: none;
-  padding: 0  10px;
+  padding: 0 5px;
   float: right;
 }
+
 .note-detail {
   flex: 1;
   display: flex;
@@ -136,7 +158,7 @@ export default {
 
   .note-bar {
     background-color: #cccccc;
-    padding: 4px 20px;
+    padding: 4px 15px;
     border-bottom: 1px solid #eee;
 
     &:after {

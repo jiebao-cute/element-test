@@ -29,7 +29,7 @@
 import Notebooks from '@/apis/notebooks'
 import Notes from '@/apis/notes'
 import Bus from "@/helpers/bus.js"
-import {friendlyDate} from "../../helpers/util";
+
 
 export default {
   data(){
@@ -41,20 +41,23 @@ export default {
  },
   methods:{
     handleCommand(notebookId){
-      if(notebookId === 'trash'){
-       return this.$router.push({path: '/trash'})
+      if(notebookId !== this.curBook.id){
+        if(notebookId === 'trash'){
+          return this.$router.push({path: '/trash'})
+        }
+        this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)
+        Notes.getAll({notebookId})
+          .then(res=>{
+            this.notes = res.data
+            this.$emit('update:notes', this.notes)
+            if(this.notes.length > 0 ){
+              this.$router.push({path:`/note?noteId=${this.notes[0].id}&notebookId=${this.curBook.id}`})
+            }else {
+              this.$router.push({path: `/note?notebookId=${this.curBook.id}`})
+            }
+          })
       }
-      this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)
-      Notes.getAll({notebookId})
-        .then(res=>{
-          this.notes = res.data
-          this.$emit('update:notes', this.notes)
-          if(this.notes.length > 0){
-            this.$router.push({path:`/note?noteId=${this.notes[0].id}&notebookId=${this.curBook.id}`})
-          }else {
-            this.$router.push({path: `/note?notebookId=${this.curBook.id}`})
-          }
-        })
+
     },
     addNote(){
       this.$prompt('请输入笔记标题', '创建笔记', {
