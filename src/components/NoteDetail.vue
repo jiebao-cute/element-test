@@ -26,7 +26,10 @@
             </svg></el-button>
           </el-popconfirm>
         </span>
-          <span @click="isShowPreview = !isShowPreview"> <i class="el-icon-edit"></i></span>
+          <span @click="showPreview">
+            <i class="el-icon-edit" v-show="isShow"></i>
+            <i class="el-icon-help" v-show="!isShow"></i>
+          </span>
         </div>
         <div class="note-title">
           <input type="text" v-model="curNotes.title" @input="updateNote" placeholder="请在此输入标题...."
@@ -62,7 +65,8 @@ export default {
       curNotes: [],
       notes: [],
       statusText: '笔记未改动',
-      isShowPreview: false
+      isShowPreview: false,
+      isShow:true
     }
   },
   created() {
@@ -97,8 +101,11 @@ export default {
           this.$message.success(res.msg)
           this.$router.replace({path: '/note'})
         })
+    },
+    showPreview(){
+      this.isShowPreview = !this.isShowPreview
+      this.isShow = !this.isShow
     }
-
   },
   beforeRouteUpdate(to, from, next) {
     this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
@@ -115,7 +122,7 @@ export default {
   background-color: #ffffff;
   flex: 1;
 }
-.el-icon-edit{
+.el-icon-edit ,.el-icon-help{
   width: 1em;
   height: 1em;
   float: right;
