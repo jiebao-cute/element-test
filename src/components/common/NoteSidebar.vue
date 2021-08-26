@@ -29,6 +29,7 @@
 import Notebooks from '@/apis/notebooks'
 import Notes from '@/apis/notes'
 import Bus from "@/helpers/bus.js"
+import {friendlyDate} from "../../helpers/util";
 
 export default {
   data(){
@@ -51,11 +52,17 @@ export default {
         })
     },
     addNote(){
-     Notes.addNote({notebookId:this.curBook.id})
-       .then(res=>{
-         this.$message.success(res.msg)
-         this.notes.unshift(res.data)
-       })
+      this.$prompt('请输入笔记标题', '创建笔记', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^.{1,30}$/,
+        inputErrorMessage: '标题不能为空，且不能超过三十个字'
+      }).then(({value}) => {
+        return Notes.addNote({notebookId:this.curBook.id}, { title: value})
+      }).then(res => {
+        this.$message.success(res.msg)
+        this.notes.unshift(res.data)
+      }).catch(e=>e)
     }
   },
   created() {
