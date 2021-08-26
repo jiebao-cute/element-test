@@ -5,7 +5,7 @@
         <svg class='iconfont icon-plus'>
           <use xlink:href="#icon-jia"/>
         </svg>
-        新建笔记
+        新建笔记本
       </a>
     </header>
     <main>
