@@ -49,6 +49,11 @@ export default {
         .then(res=>{
           this.notes = res.data
           this.$emit('update:notes', this.notes)
+          if(this.notes.length > 0){
+            this.$router.push({path:`/note?noteId=${this.notes[0].id}&notebookId=${this.curBook.id}`})
+          }else {
+            this.$router.push({path: `/note?notebookId=${this.curBook.id}`})
+          }
         })
     },
     addNote(){
