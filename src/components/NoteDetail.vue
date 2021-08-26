@@ -8,9 +8,11 @@
         <span>创建日期：{{ curNotes.createdAtFriendly }}</span>
         <span>更新日期：{{ curNotes.updatedAtFriendly }}</span>
         <span>{{this.statusText}}</span>
+        <span @click="deleteNote">
         <svg class='iconfont icon-plus'>
           <use xlink:href="#icon-huishou"/>
         </svg>
+        </span>
       </div>
       <div class="note-title">
         <input type="text" v-model="curNotes.title"  @input="updateNote" placeholder="请在此输入标题...."  @keydown="statusText = '正在输入...'"></input>
@@ -54,7 +56,7 @@ export default {
     })
   },
   methods:{
-    updateNote: Common.debounce(function (){
+    updateNote: Common.debounce(function (){//不能用箭头函数，因为没有this
       Notes.updateNote({ noteId: this.curNotes.id },
         { title: this.curNotes.title, content: this.curNotes.content })
         .then(res=>{
@@ -62,7 +64,15 @@ export default {
         }).catch(res => {
         this.statusText = '保存出错'
         })
-    },600)
+    },600),
+    deleteNote(){
+      Notes.deleteNote({noteId:this.curNotes.id})//删除数据库中的数据
+        .then(res=>{
+          this.notes.splice(this.notes.indexOf(this.curNotes),1)//删除UI 中的数据
+          this.$message.success(res.msg)
+          this.$router.replace({path:'/note'})
+        })
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
