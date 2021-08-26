@@ -51,7 +51,11 @@ export default {
         })
     },
     addNote(){
-      console.log('1')
+     Notes.addNote({notebookId:this.curBook.id})
+       .then(res=>{
+         this.$message.success(res.msg)
+         this.notes.unshift(res.data)
+       })
     }
   },
   created() {

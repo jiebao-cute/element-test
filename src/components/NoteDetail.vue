@@ -2,27 +2,39 @@
   <div id="note" class="detail">
     <NoteSidebar @update:notes="val => notes = val"/>
     <div class="note-detail">
-      <div class="note-empty" v-show="!curNotes.id" >请选择或者创建笔记</div>
+      <div class="note-empty" v-show="!curNotes.id">请选择或者创建笔记</div>
       <div class="note-detail-ct" v-show="curNotes.id">
-      <div class="note-bar">
-        <span>创建日期：{{ curNotes.createdAtFriendly }}</span>
-        <span>更新日期：{{ curNotes.updatedAtFriendly }}</span>
-        <span>{{this.statusText}}</span>
-        <span @click="deleteNote">
-        <svg class='iconfont icon-plus'>
-          <use xlink:href="#icon-huishou"/>
-        </svg>
+        <div class="note-bar">
+          <span>创建日期：{{ curNotes.createdAtFriendly }}</span>
+          <span>更新日期：{{ curNotes.updatedAtFriendly }}</span>
+          <span>{{ this.statusText }}</span>
+          <span >
+          <el-popconfirm
+            confirm-button-text='好的'
+            cancel-button-text='不用了'
+            icon="el-icon-info"
+            icon-color="red"
+            title="确定删除笔记吗？删除后会放入回收站"
+            @confirm="deleteNote"
+          >
+         <el-button slot="reference" >
+           <svg class='iconfont icon-plus'>
+             <use xlink:href="#icon-huishou"/>
+            </svg></el-button>
+          </el-popconfirm>
         </span>
-      </div>
-      <div class="note-title">
-        <input type="text" v-model="curNotes.title"  @input="updateNote" placeholder="请在此输入标题...."  @keydown="statusText = '正在输入...'"></input>
-      </div>
-      <div class="editor">
-      <textarea v-show="true" v-model="curNotes.content"  @input="updateNote" placeholder="输入内容, 支持 markdown 语法" @keydown="statusText = '正在输入...'">
+        </div>
+        <div class="note-title">
+          <input type="text" v-model="curNotes.title" @input="updateNote" placeholder="请在此输入标题...."
+                 @keydown="statusText = '正在输入...'"></input>
+        </div>
+        <div class="editor">
+      <textarea v-show="true" v-model="curNotes.content" @input="updateNote" placeholder="输入内容, 支持 markdown 语法"
+                @keydown="statusText = '正在输入...'">
         currNOte的ID{{ curNotes.id }}
       </textarea>
-        <div class="preview markdown-body" v-show="false" v-html=""></div>
-      </div>
+          <div class="preview markdown-body" v-show="false" v-html=""></div>
+        </div>
       </div>
     </div>
   </div>
@@ -55,24 +67,25 @@ export default {
       this.curNotes = val.find(note => note.id == this.$route.query.noteId) || {}
     })
   },
-  methods:{
-    updateNote: Common.debounce(function (){//不能用箭头函数，因为没有this
-      Notes.updateNote({ noteId: this.curNotes.id },
-        { title: this.curNotes.title, content: this.curNotes.content })
-        .then(res=>{
+  methods: {
+    updateNote: Common.debounce(function () {//不能用箭头函数，因为没有this
+      Notes.updateNote({noteId: this.curNotes.id},
+        {title: this.curNotes.title, content: this.curNotes.content})
+        .then(res => {
           this.statusText = '已保存'
         }).catch(res => {
         this.statusText = '保存出错'
-        })
-    },600),
-    deleteNote(){
-      Notes.deleteNote({noteId:this.curNotes.id})//删除数据库中的数据
-        .then(res=>{
-          this.notes.splice(this.notes.indexOf(this.curNotes),1)//删除UI 中的数据
+      })
+    }, 600),
+    deleteNote() {
+      Notes.deleteNote({noteId: this.curNotes.id})//删除数据库中的数据
+        .then(res => {
+          this.notes.splice(this.notes.indexOf(this.curNotes), 1)//删除UI 中的数据
           this.$message.success(res.msg)
-          this.$router.replace({path:'/note'})
+          this.$router.replace({path: '/note'})
         })
     }
+
   },
   beforeRouteUpdate(to, from, next) {
     this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
@@ -99,12 +112,18 @@ export default {
   cursor: pointer;
 }
 
-.note-empty{
+.note-empty {
   font-size: 50px;
   color: #ccc;
   text-align: center;
   margin-top: 100px;
   float: top;
+}
+.el-button{
+  background-color: #cccccc;
+  border: none;
+  padding: 0  10px;
+  float: right;
 }
 .note-detail {
   flex: 1;
@@ -119,11 +138,13 @@ export default {
     background-color: #cccccc;
     padding: 4px 20px;
     border-bottom: 1px solid #eee;
+
     &:after {
-      content:'';
+      content: '';
       display: block;
       clear: both;
     }
+
     span {
 
       font-size: 12px;
