@@ -49,7 +49,7 @@ export default {
         Notes.getAll({notebookId})
           .then(res=>{
             this.notes = res.data
-            this.$emit('update:notes', this.notes)
+            this.$emit('update:notes', this.notes) //下拉框点击时将数据传给父组件
             if(this.notes.length > 0 ){
               this.$router.push({path:`/note?noteId=${this.notes[0].id}&notebookId=${this.curBook.id}`})
             }else {
@@ -77,11 +77,12 @@ export default {
    Notebooks.getAll()
      .then(res=>{
        this.notebooks = res.data
-       this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId)  || this.notebooks[0] || {}
+       this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId)
+         || this.notebooks[0] || {}
        return Notes.getAll({ notebookId: this.curBook.id })
      }).then(res=>{
     this.notes = res.data
-    this.$emit('update:notes', this.notes)
+    this.$emit('update:notes', this.notes)//在点击进入这个页面将notes数据传给父组件
     Bus.$emit('update:notes',this.notes)
    })
   },
