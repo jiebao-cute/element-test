@@ -36,15 +36,13 @@
 import Auth from "../apis/auth.js";
 import Notebooks from "../apis/notebooks"
 import {friendlyDate} from "../helpers/util";
-
+import { mapState, mapActions, mapGetters } from 'vuex'
 Window.notebooks = Notebooks
 
 export default {
   name: 'NotebookList',
   data() {
-    return {
-      notebooks: []
-    }
+    return {}
   },
   methods: {
     onCreat() {
@@ -98,10 +96,11 @@ export default {
         this.$router.push({path: '/'})
       }
     })
-    Notebooks.getAll().then(res => {
-      this.notebooks = res.data
-    })
-  }
+    this.$store.dispatch('getNotebooks')
+  },
+  computed: {
+    ...mapGetters(['notebooks'])
+  },
 }
 </script>
 
