@@ -23,7 +23,7 @@
               <span>{{ notebooks.noteCounts }}</span>
               <span class="action" @click.stop.prevent="onEdit(notebooks)">编辑</span>
               <span class="action" @click.stop.prevent="onDelete(notebooks)">删除</span>
-              <span class="data">{{ notebooks.friendlycreatedAt }}</span>
+              <span class="data">{{ notebooks.createdAtFriendly }}</span>
             </div>
           </router-link>
         </div>
@@ -44,7 +44,15 @@ export default {
   data() {
     return {}
   },
+
   methods: {
+    ...mapActions([
+      'getNotebooks',
+      'addNotebook',
+      'updateNotebook',
+      'deleteNotebook',
+      'checkLogin'
+    ]),
     onCreat() {
       this.$prompt('请输入笔记本标题', '创建笔记本', {
         confirmButtonText: '确定',
@@ -52,15 +60,10 @@ export default {
         inputPattern: /^.{1,30}$/,
         inputErrorMessage: '标题不能为空，且不能超过三十个字'
       }).then(({value}) => {
-        return Notebooks.addNoteBook({title: value})
-      }).then(res => {
-        res.data.friendlycreatedAt = friendlyDate(res.data.createdAt)//UI上面显示的时间
-        this.notebooks.unshift(res.data)
-        this.$message.success(res.msg)
-      }).catch(e=>e)
+        this.addNotebook({ title: value })
+      })
     },
     onEdit(notebooks) {
-      let title = ''
       this.$prompt('请输入新笔记本标题', '更新笔记本标题', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -68,12 +71,8 @@ export default {
         inputValue: notebooks.title,
         inputErrorMessage: '标题不能为空，且不能超过三十个字'
       }).then(({value}) => {
-        title = value
-        return Notebooks.updateNotebook(notebooks.id, {title})
-      }).then(res => {
-        notebooks.title = title
-        this.$message.success(res.msg)
-      }).catch(e=>e)
+        this.updateNotebook({ notebookId: notebooks.id, title: value })
+      })
     },
     onDelete(notebooks) {
       this.$confirm('此操作将永久删除该文件, 你确定要删除该笔记吗?', '提示', {
@@ -81,13 +80,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return Notebooks.deleteNotebook(notebooks.id)
-      }).then(res => {//通知服务器删除
-        this.notebooks.splice(this.notebooks.indexOf(notebooks), 1)//通知UI删除
-        this.$message({
-          type: 'success',
-          message: res.msg,
-        })}).catch(e=>e)
+        this.deleteNotebook({ notebookId: notebooks.id })
+      })
       }
   },
   created() {
@@ -96,7 +90,7 @@ export default {
         this.$router.push({path: '/'})
       }
     })
-    this.$store.dispatch('getNotebooks')
+    this.getNotebooks()
   },
   computed: {
     ...mapGetters(['notebooks'])

@@ -16,7 +16,7 @@ const mutations = {
   },
 
   addNotebook(state, payload) {
-    state.notebooks.unshift(payload.notebooks)
+    state.notebooks.unshift(payload.notebook)
   },
 
   updateNotebook(state,payload){
@@ -40,6 +40,7 @@ const actions = {
   addNotebook({commit},payload){
     return Notebooks.addNoteBook({title:payload.title})
       .then(res=>{
+        console.log(res)
         commit('addNotebook',{notebook: res.data})
         Message.success(res.msg)
       })
@@ -57,7 +58,7 @@ const actions = {
   deleteNotebook({commit},payload){
     return Notebooks.deleteNotebook(payload.notebookId)
       .then(res=>{
-        commit('deleteNotebook',{notebookId:payload.notebookId})
+        commit('deleteNotebook',{notebookId: payload.notebookId})
         Message.success(res.msg)
       })
   }
