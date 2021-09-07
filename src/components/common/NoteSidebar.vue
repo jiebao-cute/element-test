@@ -57,8 +57,8 @@ export default {
 
   methods:{
     ...mapMutations([
-      'setCurBook',
-      'setCurNote'
+      'setCurBook', //当前选择的notebook
+      'setCurNote' //当前选择的note
     ]),
 
     ...mapActions([
@@ -73,8 +73,9 @@ export default {
         if(notebookId === 'trash'){
           return this.$router.push({path: '/trash'})
         }
-        this.setCurBook({ curBookId: notebookId})
         this.getNotes({notebookId:notebookId})
+        this.setCurBook({ curBookId: notebookId})
+
         //this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)
         // Notes.getAll({notebookId})
         //   .then(res=>{
@@ -87,7 +88,6 @@ export default {
         //     }
         //   })
       }
-
     },
     addNotes(){
       this.$prompt('请输入笔记标题', '创建笔记', {

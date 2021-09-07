@@ -8,10 +8,10 @@ const state = {
 
 const getters = {
   notes: state => state.notes || [],
-  curNoteId: state=>{
+  curNoteId: state =>{
     if(!Array.isArray(state.notes)) return {}
     if (!state.curNoteId)return state.notes[0] || {}
-    return state.notes.find(note=> note.id == state.curNoteId )
+    return state.notes.find(note=> note.id == state.curNoteId ) || {}
   }
 }
 
@@ -45,6 +45,7 @@ const actions = {
     return Notes.getAll({ notebookId })
       .then(res => {
         commit('setNote', { notes : res.data })
+
       })
   },
 

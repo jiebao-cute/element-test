@@ -2,14 +2,14 @@
   <div id="note" class="detail">
     <NoteSidebar @update:notes="val => notes = val"/>
     <div class="note-detail">
-      <div class="note-empty" v-show="!curNotes.id">
+      <div class="note-empty" v-show="!curNoteId.id">
         <i class="el-icon-reading"></i>
         在左侧选择或添加笔记
       </div>
-      <div class="note-detail-ct" v-show="curNotes.id">
+      <div class="note-detail-ct" v-show="curNoteId.id">
         <div class="note-bar">
-          <span>创建日期：{{ curNotes.createdAtFriendly }}</span>
-          <span>更新日期：{{ curNotes.updatedAtFriendly }}</span>
+          <span>创建日期：{{ curNoteId.createdAtFriendly }}</span>
+          <span>更新日期：{{ curNoteId.updatedAtFriendly }}</span>
           <span>{{ this.statusText }}</span>
           <span>
           <el-popconfirm
@@ -18,7 +18,7 @@
             icon="el-icon-info"
             icon-color="red"
             title="确定删除笔记吗？删除后会放入回收站"
-            @confirm="deleteNote"
+            @confirm="deleteNotes"
           >
          <el-button slot="reference">
            <svg class='iconfont icon-plus'>
@@ -32,11 +32,11 @@
           </span>
         </div>
         <div class="note-title">
-          <input type="text" v-model="curNotes.title" @input="updateNote" placeholder="请在此输入标题...."
+          <input type="text" v-model="curNoteId.title" @input="updateNotes" placeholder="请在此输入标题...."
                  @keydown="statusText = '正在输入...'"></input>
         </div>
         <div class="editor">
-      <textarea v-show="!isShowPreview" v-model="curNotes.content" @input="updateNote" placeholder="输入内容, 支持 markdown 语法"
+      <textarea v-show="!isShowPreview" v-model="curNoteId.content" @input="updateNotes" placeholder="输入内容, 支持 markdown 语法"
                 @keydown="statusText = '正在输入...'">
       </textarea>
           <div class="preview markdown-body" v-show="isShowPreview" v-html="previewContent">
@@ -51,19 +51,17 @@
 <script>
 import Auth from "../apis/auth";
 import NoteSidebar from "./common/NoteSidebar";
-import Bus from "@/helpers/bus.js"
-import Notes from '@/apis/notes'
 import Common from '@/helpers/common.js';
 import MarkdownIt from 'markdown-it'
+import { mapActions, mapGetters ,mapMutations} from 'vuex'
 
 let md = new MarkdownIt()
 export default {
   name: 'NoteDetail',
   components: {NoteSidebar},
+
   data() {
     return {
-      curNotes: [],
-      notes: [],
       statusText: '笔记未改动',
       isShowPreview: false,
       isShow:true
@@ -75,32 +73,56 @@ export default {
         this.$router.push({path: '/'})
       }
     })
-    Bus.$on('update:notes', val => {
-      this.curNotes = val.find(note => note.id == this.$route.query.noteId) || {}
-    })
+    // Bus.$on('update:notes', val => {
+    //   this.curNotes = val.find(note => note.id == this.$route.query.noteId) || {}
+    // })
   },
+
+
+
   computed:{
-    previewContent(){
-      return  md.render(this.curNotes.content || '')
-    }
+    previewContent(){//markdown文档
+      return  md.render(this.curNoteId.content || '')
+    },
+      ...mapGetters([
+        'notes',
+        'curNoteId'
+      ])
   },
+
+
   methods: {
-    updateNote: Common.debounce(function () {//不能用箭头函数，因为没有this
-      Notes.updateNote({noteId: this.curNotes.id},
-        {title: this.curNotes.title, content: this.curNotes.content})
+    ...mapMutations([
+      'setCurNote'
+    ]),
+
+    ...mapActions([
+      'updateNote',
+      'deleteNote',
+      'checkLogin'
+    ]),
+
+
+    updateNotes: Common.debounce(function () {//不能用箭头函数，因为没有this
+        this.updateNote({ noteId: this.curNoteId.id, title: this.curNoteId.title, content: this.curNoteId.content })
         .then(res => {
           this.statusText = '已保存'
         }).catch(res => {
         this.statusText = '保存出错'
       })
-    }, 600),
-    deleteNote() {
-      Notes.deleteNote({noteId: this.curNotes.id})//删除数据库中的数据
-        .then(res => {
-          this.notes.splice(this.notes.indexOf(this.curNotes), 1)//删除UI 中的数据
-          this.$message.success(res.msg)
-          this.$router.replace({path: '/note'})
+    }, 1500),
+
+    deleteNotes() {
+      this.deleteNote({noteId:this.curNoteId.id})
+        .then(data => {
+          this.$router.replace({ path: '/note' })
         })
+      // Notes.deleteNote({noteId: this.curNotes.id})//删除数据库中的数据
+      //   .then(res => {
+      //     this.notes.splice(this.notes.indexOf(this.curNotes), 1)//删除UI 中的数据
+      //     this.$message.success(res.msg)
+      //     this.$router.replace({path: '/note'})
+      //   })
     },
     showPreview(){
       this.isShowPreview = !this.isShowPreview
@@ -108,7 +130,8 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
-    this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
+    this.setCurNote({curNoteId:to.query.noteId})
+    //this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
     next()
   }
 

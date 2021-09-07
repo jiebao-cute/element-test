@@ -8,9 +8,14 @@ const state = {
 
 const getters = {
   notebooks: state => state.notebooks || [],
+  // curBookId: state => {
+  //   if (!Array.isArray(state.notebooks)) return {}
+  //   if (!state.curBookId) return state.notebooks[0] || {}
+  //   return state.notebooks.find(notebook => notebook.id == state.curBookId) || {}
+  // }
   curBookId: state => {
-    if (!Array.isArray(state.notebooks)) return {}
-    if (!state.curBookId) return state.notebooks[0] || {}
+    if(!Array.isArray(state.notebooks)) return {}
+    if(!state.curBookId) return state.notebooks[0] || {}
     return state.notebooks.find(notebook => notebook.id == state.curBookId) || {}
   }
 }
