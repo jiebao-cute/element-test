@@ -1,9 +1,9 @@
 <template>
 <div class="note-sidebar">
-  <span class=" btn add-note" @click="addNote">添加笔记</span>
+  <span class=" btn add-note" @click="addNotes">添加笔记</span>
   <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
   <span class="el-dropdown-link" >
-    {{curBook.title}}<i class="el-icon-arrow-down el-icon--right"></i>
+    {{curBookId.title}}<i class="el-icon-arrow-down el-icon--right"></i>
   </span>
     <el-dropdown-menu slot="dropdown" >
       <el-dropdown-item :command="notebook.id" v-for="notebook in notebooks">{{notebook.title}}</el-dropdown-item>
@@ -16,7 +16,7 @@
   </div>
    <ul class="notes" v-for="note in notes">
      <li>
-       <router-link :to="`/note?noteId=${note.id}&notebookId=${curBook.id}`" >
+       <router-link :to="`/note?noteId=${note.id}&notebookId=${curBookId.id}`" >
          <span class="data">{{note.updatedAtFriendly}}</span>
          <span class="title">{{note.title}}</span>
        </router-link>
@@ -26,66 +26,82 @@
 </template>
 
 <script>
-import Notebooks from '@/apis/notebooks'
-import Notes from '@/apis/notes'
-import Bus from "@/helpers/bus.js"
-
+import { mapActions, mapGetters ,mapMutations} from 'vuex'
 
 export default {
   data(){
    return {
-     notebooks:[],
-     notes:[],
-     curBook: {}
+
    }
  },
+
+  created() {
+    this.getNotebooks()
+      .then(()=>{
+        this.setCurBook({curBookId:this.$route.query.notebookId})
+        return this.getNotes({ notebookId: this.curBookId.id})
+      }).then(()=>{
+        this.setCurNote({ curNoteId: this.$route.query.noteId })
+    })
+  },
+
+  computed: {
+    //放在计算属性里面，只要notebooks变化就可以重新计算
+    ...mapGetters([
+      'notebooks',
+      'notes',
+      'curBookId',
+      'curNoteId'
+    ])
+  },
+
   methods:{
+    ...mapMutations([
+      'setCurBook',
+      'setCurNote'
+    ]),
+
+    ...mapActions([
+      'getNotebooks',
+      'getNotes',
+      'addNote'
+    ]),
+
+
     handleCommand(notebookId){
-      if(notebookId !== this.curBook.id){
+      if(notebookId !== this.curBookId.id){
         if(notebookId === 'trash'){
           return this.$router.push({path: '/trash'})
         }
-        this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)
-        Notes.getAll({notebookId})
-          .then(res=>{
-            this.notes = res.data
-            this.$emit('update:notes', this.notes) //下拉框点击时将数据传给父组件
-            if(this.notes.length > 0 ){
-              this.$router.push({path:`/note?noteId=${this.notes[0].id}&notebookId=${this.curBook.id}`})
-            }else {
-              this.$router.push({path: `/note?notebookId=${this.curBook.id}`})
-            }
-          })
+        this.setCurBook({ curBookId: notebookId})
+        this.getNotes({notebookId:notebookId})
+        //this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)
+        // Notes.getAll({notebookId})
+        //   .then(res=>{
+        //     this.notes = res.data
+        //     this.$emit('update:notes', this.notes) //下拉框点击时将数据传给父组件
+        //     if(this.notes.length > 0 ){
+        //       this.$router.push({path:`/note?noteId=${this.notes[0].id}&notebookId=${this.curBook.id}`})
+        //     }else {
+        //       this.$router.push({path: `/note?notebookId=${this.curBook.id}`})
+        //     }
+        //   })
       }
 
     },
-    addNote(){
+    addNotes(){
       this.$prompt('请输入笔记标题', '创建笔记', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputPattern: /^.{1,30}$/,
         inputErrorMessage: '标题不能为空，且不能超过三十个字'
       }).then(({value}) => {
-        return Notes.addNote({notebookId:this.curBook.id}, { title: value})
-      }).then(res => {
-        this.$message.success(res.msg)
-        this.notes.unshift(res.data)
-      }).catch(e=>e)
+        this.addNote({ notebookId:this.curBookId.id,title:value})
+       // return Notes.addNote({notebookId:this.curBook.id}, { title: value})
+      })
     }
   },
-  created() {
-   Notebooks.getAll()
-     .then(res=>{
-       this.notebooks = res.data
-       this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId)
-         || this.notebooks[0] || {}
-       return Notes.getAll({ notebookId: this.curBook.id })
-     }).then(res=>{
-    this.notes = res.data
-    this.$emit('update:notes', this.notes)//在点击进入这个页面将notes数据传给父组件
-    Bus.$emit('update:notes',this.notes)//直接进入页面时将数据触发给组件
-   })
-  },
+
 }
 </script>
 
