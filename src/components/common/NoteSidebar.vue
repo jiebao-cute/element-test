@@ -83,7 +83,7 @@ export default {
      }).then(res=>{
     this.notes = res.data
     this.$emit('update:notes', this.notes)//在点击进入这个页面将notes数据传给父组件
-    Bus.$emit('update:notes',this.notes)
+    Bus.$emit('update:notes',this.notes)//直接进入页面时将数据触发给组件
    })
   },
 }

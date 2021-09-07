@@ -34,25 +34,35 @@
 
 <script>
 import Auth from "../apis/auth.js";
-import Notebooks from "../apis/notebooks"
-import {friendlyDate} from "../helpers/util";
 import { mapState, mapActions, mapGetters } from 'vuex'
-Window.notebooks = Notebooks
+
 
 export default {
   name: 'NotebookList',
   data() {
     return {}
   },
+  created() {
+    Auth.getInfo().then(res => {
+      if (!res.isLogin) {
+        this.$router.push({path: '/'})
+      }
+    })
+    this.getNotebooks()
 
+  },
+  computed: {
+    //放在计算属性里面，只要notebooks变化就可以重新计算
+    ...mapGetters(['notebooks'])
+  },
   methods: {
     ...mapActions([
       'getNotebooks',
       'addNotebook',
       'updateNotebook',
       'deleteNotebook',
-      'checkLogin'
     ]),
+
     onCreat() {
       this.$prompt('请输入笔记本标题', '创建笔记本', {
         confirmButtonText: '确定',
@@ -63,6 +73,7 @@ export default {
         this.addNotebook({ title: value })
       })
     },
+
     onEdit(notebooks) {
       this.$prompt('请输入新笔记本标题', '更新笔记本标题', {
         confirmButtonText: '确定',
@@ -74,6 +85,7 @@ export default {
         this.updateNotebook({ notebookId: notebooks.id, title: value })
       })
     },
+
     onDelete(notebooks) {
       this.$confirm('此操作将永久删除该文件, 你确定要删除该笔记吗?', '提示', {
         confirmButtonText: '确定',
@@ -84,17 +96,7 @@ export default {
       })
       }
   },
-  created() {
-    Auth.getInfo().then(res => {
-      if (!res.isLogin) {
-        this.$router.push({path: '/'})
-      }
-    })
-    this.getNotebooks()
-  },
-  computed: {
-    ...mapGetters(['notebooks'])
-  },
+
 }
 </script>
 

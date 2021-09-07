@@ -10,7 +10,8 @@ const URL = {
 export default {
   getAll() {
     return new Promise((resolve, reject) => {
-      return request(URL.GET).then(res => {
+      return request(URL.GET)
+        .then(res => {
         res.data = res.data.sort(function (a, b) {
           return a.createdAt < b.createdAt ? 1 : -1
         })
