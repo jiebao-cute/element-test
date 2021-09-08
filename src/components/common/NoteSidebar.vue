@@ -42,6 +42,13 @@ export default {
         return this.getNotes({ notebookId: this.curBookId.id})
       }).then(()=>{
         this.setCurNote({ curNoteId: this.$route.query.noteId })
+        this.$router.replace({
+          path:'/note',
+          query:{
+            noteId: this.curNoteId.id,
+            notebookId: this.curBookId.id
+          }
+        })
     })
   },
 

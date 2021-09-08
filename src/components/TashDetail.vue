@@ -114,7 +114,6 @@ export default {
  .note-bar{
    background-color: #cccccc;
    span {
-
      font-size: 12px;
      color: #444444;
      margin-right: 4px;
