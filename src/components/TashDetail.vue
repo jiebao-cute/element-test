@@ -7,7 +7,7 @@
         <div>标题</div>
       </div>
       <ul class="notes">
-        <li v-for="note in curTrashNote">
+        <li v-for="note in trashNotes">
           <router-link :to="`/trash?noteId=${note.id}`">
             <span class="date">{{note.updatedAtFriendly}}</span>
             <span class="title">{{note.title}}</span>
@@ -30,39 +30,74 @@
         <span>{{curTrashNote.title}}</span>
       </div>
       <div class="editor">
-        <div class="preview markdown-body" v-html=""></div>
+        <div class="preview markdown-body" v-html="compiledMarkdown"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
 import MarkdownIt from 'markdown-it'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+
 let md = new MarkdownIt()
 
 export default {
-  name: 'TashDetail',
-  data() {
-    return {
-      curTrashNote:{
-        id: 3,
-        title: '我的笔记',
-        content: 'hello',
-        updatedAtFriendly: '两个小时前',
-        createdAtFriendly: '三个小时前'
-      },
-      belongTo:'我的笔记本'
+  data () {
+    return {}
+  },
+
+  created() {
+    this.checkLogin({ path: '/login' })
+    this.getNotebooks()
+    this.getTrashNotes()
+      .then(() => {
+        this.setCurTrashNote({ curTrashNoteId: this.$route.query.noteId })
+      })
+  },
+
+  computed: {
+    ...mapGetters([
+      'trashNotes',
+      'curTrashNote',
+      'belongTo'
+    ]),
+
+    compiledMarkdown () {
+      return md.render(this.curTrashNote.content||'')
     }
   },
-  methods:{
-    onRevert(){
-      console.log('1')
+
+  methods: {
+    ...mapMutations([
+      'setCurTrashNote'
+    ]),
+
+    ...mapActions([
+      'checkLogin',
+      'deleteTrashNote',
+      'revertTrashNote',
+      'getTrashNotes',
+      'getNotebooks',
+    ]),
+
+    onDelete() {
+      console.log({ noteId: this.curTrashNote.id })
+      this.deleteTrashNote({ noteId: this.curTrashNote.id })
     },
-    onDelete(){
-      console.log('2')
+
+    onRevert() {
+      this.revertTrashNote({ noteId: this.curTrashNote.id })
     }
+
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    this.setCurTrashNote({ curTrashNoteId: to.query.noteId})
+    next()
   }
+
 }
 </script>
 

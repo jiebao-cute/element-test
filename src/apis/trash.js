@@ -29,7 +29,7 @@ export default {
   deleteNote({ noteId }) {
     return request(URL.DELETE.replace(':noteId', noteId), 'DELETE')
   },
-  revert({ noteId }){
+  revertNote({ noteId }){
     return request(URL.REVERT.replace(':noteId' ,noteId),'PATCH')
   }
 }
