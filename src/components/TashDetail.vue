@@ -111,14 +111,25 @@ export default {
   align-items: stretch;
   background-color: #fff;
   flex: 1;
+ .note-bar{
+   background-color: #cccccc;
+   span {
 
+     font-size: 12px;
+     color: #444444;
+     margin-right: 4px;
+   }
+ }
   .note-bar {
     .action {
       float: right;
       margin-left: 10px;
       padding: 2px 4px;
       font-size: 12px;
-
+      color: #444444;
+      &:hover{
+        color: #cf9236;
+      }
     }
   }
 }
