@@ -40,7 +40,7 @@ export default {
 
     onlogout(){
       this.logout().then(()=>{
-        this.$router.push({ path:'/' })
+        this.$router.push({ path:'/login' })
       })
     }
   }

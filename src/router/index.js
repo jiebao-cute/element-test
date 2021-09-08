@@ -1,10 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Login.vue'
-import NotebookList from '@/components/NotebookList.vue'
-import NoteDetail from '@/components/NoteDetail.vue'
-import TashDetail from '@/components/TashDetail.vue'
-import NotFound from '@/components/NotFound.vue'
 
 
 Vue.use(Router)
@@ -12,21 +7,21 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/login',
+      component: () => import('@/components/Login.vue')
+    },{
       path: '/',
-      name: 'Login',
-      component: Login,
-    },{
-      path: '/notebooks',
-      component: NotebookList
-    },{
+      alias:'/notebooks',//别名，就是根目录和/notebooks都是访问的notebooks
+      component: () => import('@/components/NotebookList.vue')
+    }, {
       path: '/note',
-      component: NoteDetail
+      component: () => import('@/components/NoteDetail.vue')
     },{
       path: '/trash',
-      component: TashDetail
+      component: () => import('@/components/TashDetail.vue')
     },{
       path:'*',
-      component: NotFound
+      component: () => import('@/components/NotFound.vue')
     }
   ]
 })

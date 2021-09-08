@@ -68,7 +68,7 @@ export default {
     }
   },
   created() {
-    this.checkLogin({ path: '/' })
+    this.checkLogin({ path: '/login' })
     // Auth.getInfo().then(res => {
     //   if (!res.isLogin) {
     //     this.$router.push({path: '/'})
