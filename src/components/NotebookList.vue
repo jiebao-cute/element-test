@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import Auth from "../apis/auth.js";
 import { mapState, mapActions, mapGetters } from 'vuex'
 
 

@@ -89,9 +89,13 @@ export default {
     ]),
 
     onDelete() {
-      console.log({ noteId: this.curTrashNote.id })
-      this.deleteTrashNote({ noteId: this.curTrashNote.id })
+      this.$confirm('此操作将永久删除该文件, 你确定要删除该笔记吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning' })
       .then(()=>{
+       return  this.deleteTrashNote({ noteId: this.curTrashNote.id })
+      }).then(()=>{
         this.setCurTrashNote({})
         this.$router.replace({
           path:'/trash',
