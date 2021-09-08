@@ -91,10 +91,28 @@ export default {
     onDelete() {
       console.log({ noteId: this.curTrashNote.id })
       this.deleteTrashNote({ noteId: this.curTrashNote.id })
+      .then(()=>{
+        this.setCurTrashNote({})
+        this.$router.replace({
+          path:'/trash',
+          query:{
+            noteId: this.curTrashNote.id
+          }
+        })
+      })
     },
 
     onRevert() {
       this.revertTrashNote({ noteId: this.curTrashNote.id })
+        .then(()=>{
+          this.setCurTrashNote({})
+          this.$router.replace({
+            path:'/trash',
+            query:{
+              noteId: this.curTrashNote.id
+            }
+          })
+        })
     }
 
   },
