@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import Auth from "@/apis/auth.js";
-import Bus from "@/helpers/bus.js"
 import {mapActions,mapGetters} from "vuex";
 export default {
   data() {
