@@ -105,6 +105,7 @@ export default {
 
 
     updateNotes: Common.debounce(function () {//不能用箭头函数，因为没有this
+      if (!this.curNoteId.id) return{}
         this.updateNote({ noteId: this.curNoteId.id, title: this.curNoteId.title, content: this.curNoteId.content })
         .then(res => {
           this.statusText = '已保存'
