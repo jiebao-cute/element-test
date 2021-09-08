@@ -68,11 +68,12 @@ export default {
     }
   },
   created() {
-    Auth.getInfo().then(res => {
-      if (!res.isLogin) {
-        this.$router.push({path: '/'})
-      }
-    })
+    this.checkLogin({ path: '/login' })
+    // Auth.getInfo().then(res => {
+    //   if (!res.isLogin) {
+    //     this.$router.push({path: '/'})
+    //   }
+    // })
     // Bus.$on('update:notes', val => {
     //   this.curNotes = val.find(note => note.id == this.$route.query.noteId) || {}
     // })

@@ -43,11 +43,12 @@ export default {
     return {}
   },
   created() {
-    Auth.getInfo().then(res => {
-      if (!res.isLogin) {
-        this.$router.push({path: '/'})
-      }
-    })
+    this.checkLogin({ path: '/login' })
+    // Auth.getInfo().then(res => {
+    //   if (!res.isLogin) {
+    //     this.$router.push({path: '/'})
+    //   }
+    // })
     this.getNotebooks()
 
   },
@@ -61,6 +62,7 @@ export default {
       'addNotebook',
       'updateNotebook',
       'deleteNotebook',
+      'checkLogin'
     ]),
 
     onCreat() {
