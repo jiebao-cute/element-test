@@ -4,7 +4,7 @@ import Login from '@/components/Login.vue'
 import NotebookList from '@/components/NotebookList.vue'
 import NoteDetail from '@/components/NoteDetail.vue'
 import TashDetail from '@/components/TashDetail.vue'
-
+import NotFound from '@/components/NotFound.vue'
 
 
 Vue.use(Router)
@@ -24,8 +24,9 @@ export default new Router({
     },{
       path: '/trash',
       component: TashDetail
+    },{
+      path:'*',
+      component: NotFound
     }
-
-
   ]
 })
