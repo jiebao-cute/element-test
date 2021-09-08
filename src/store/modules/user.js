@@ -25,7 +25,13 @@ const actions = {
         commit('setUser', { user: res.data })
       })
   },
-
+  logout({commit}){
+    return Auth.logout()
+      .then(res => {
+        commit ('setUser',{user: null})
+      }
+    )
+  },
   register({ commit }, { username, password }) {
     return Auth.register({ username, password })
       .then(res => {

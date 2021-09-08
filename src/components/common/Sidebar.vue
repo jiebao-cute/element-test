@@ -18,7 +18,7 @@
         </svg>
       </router-link>
     </div>
-    <div class="logout" @click="logout">
+    <div class="logout" @click="onlogout">
       <svg class="iconfont icon-logout">
         <use xlink:href="#icon-tuichu"/>
       </svg>
@@ -28,17 +28,19 @@
 
 <script>
 import avatar from '@/components/common/Avatar.vue'
-import Auth from '@/apis/auth'
+import {mapActions} from  'vuex'
 
 export default {
   name: 'sidebar',
   components: { avatar },
   methods:{
-    logout(){
-      Auth.logout()
-        .then((data) => {
-          console.log(data)
-          this.$router.push({ path:'/' })
+    ...mapActions([
+      'logout'
+    ]),
+
+    onlogout(){
+      this.logout().then(()=>{
+        this.$router.push({ path:'/' })
       })
     }
   }
