@@ -81,6 +81,16 @@ export default {
           return this.$router.push({path: '/trash'})
         }
         this.getNotes({notebookId:notebookId})
+          .then(()=>{
+            this.setCurNote({})
+            this.$router.replace({
+              path:'/note',
+              query:{
+                noteId: this.curNoteId.id,
+                notebookId: this.curBookId.id
+              }
+            })
+          })
         this.setCurBook({ curBookId: notebookId})
 
         //this.curBook = this.notebooks.find(notebook => notebook.id === notebookId)
