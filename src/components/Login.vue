@@ -36,19 +36,7 @@
 </template>
 
 <script>
-import Auth from "../apis/auth.js";
-import Bus from  '../helpers/bus.js'
 import { mapGetters, mapActions } from 'vuex'
-// Auth.getInfo().then((data) => {
-//   console.log(data)
-// })
-
-// request('/auth')
-//   .then(
-//     data=>{
-//       console.log(data)
-//     }
-//   )
 export default {
   name: 'Login',
   data() {

@@ -37,7 +37,6 @@ const actions = {
     return Auth.getInfo()
       .then(res => {
         if(!res.isLogin) {
-          console.log('jump')
           router.push(payload)
         } else {
           commit('setUser', { user: res.data })

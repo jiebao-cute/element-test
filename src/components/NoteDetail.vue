@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import Auth from "../apis/auth";
+
 import NoteSidebar from "./common/NoteSidebar";
 import Common from '@/helpers/common.js';
 import MarkdownIt from 'markdown-it'
@@ -68,7 +68,7 @@ export default {
     }
   },
   created() {
-    this.checkLogin({ path: '/login' })
+    this.checkLogin({ path: '/' })
     // Auth.getInfo().then(res => {
     //   if (!res.isLogin) {
     //     this.$router.push({path: '/'})
