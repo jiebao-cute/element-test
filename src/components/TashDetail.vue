@@ -8,7 +8,7 @@
       </div>
       <ul class="notes">
         <li v-for="note in trashNotes">
-          <router-link :to="`/trash?noteId=${note.id}`">
+          <router-link :to="{path:`/trash?noteId=${note.id}`}">
             <span class="date">{{note.updatedAtFriendly}}</span>
             <span class="title">{{note.title}}</span>
           </router-link>

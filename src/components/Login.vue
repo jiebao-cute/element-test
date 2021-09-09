@@ -82,7 +82,6 @@ export default {
         this.register.notice = '密码长度为6~16个字符'
         return
       }
-      console.log(`"用户名："${this.register.username} + "密码：" ${this.register.password}`)
       this.registerUser({
         username: this.register.username,
         password: this.register.password
@@ -106,18 +105,6 @@ export default {
         this.login.notice = '密码长度为6~16个字符'
         return
       }
-
-      console.log(`"用户名："${this.login.username} + "密码：" ${this.login.password}`)
-      // request('/auth/login', 'POST',
-      //   {
-      //     username: this.login.username,
-      //     password: this.login.password
-      //   })
-      //   .then(
-      //     data => {
-      //       console.log(data)
-      //     }
-      //   )
       this.loginUser({
         username: this.login.username,
         password: this.login.password
