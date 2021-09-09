@@ -25,10 +25,11 @@ const actions = {
         commit('setUser', { user: res.data })
       })
   },
-  logout({commit}){
+  logout({commit}, payload = { path: '/login' }){
     return Auth.logout()
       .then( res => {
         commit ('setUser',{user: null})
+        router.push(payload)
       }
     )
   },
@@ -39,10 +40,12 @@ const actions = {
       })
   },
 
-  checkLogin({ commit, state }, payload) {
+  checkLogin({ commit, state }, payload= { path: '/' }) {
     if(state.user !== null) return Promise.resolve()
     return Auth.getInfo()
       .then(res => {
+        console.log('1')
+        console.log(res)
         if(!res.isLogin) {
           router.push(payload)
         } else {
