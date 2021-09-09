@@ -4,14 +4,12 @@
     <div class="note-detail">
       <div class="note-empty" v-show="!curBookId.id">请创建笔记本后</div>
       <div class="note-empty" v-show="!curNoteId.id">选择或创建笔记</div>
-
-      </div>
-      <div class="note-detail-ct" v-show="curNoteId.id">
-        <div class="note-bar">
-          <span>创建日期：{{ curNoteId.createdAtFriendly }}</span>
-          <span>更新日期：{{ curNoteId.updatedAtFriendly }}</span>
-          <span>{{ this.statusText }}</span>
-          <span>
+    <div class="note-detail-ct" v-show="curNoteId.id">
+      <div class="note-bar">
+        <span>创建日期：{{ curNoteId.createdAtFriendly }}</span>
+        <span>更新日期：{{ curNoteId.updatedAtFriendly }}</span>
+        <span>{{ this.statusText }}</span>
+        <span>
           <el-popconfirm
             confirm-button-text='好的'
             cancel-button-text='不用了'
@@ -26,22 +24,22 @@
             </svg></el-button>
           </el-popconfirm>
         </span>
-          <span @click="showPreview">
+        <span @click="showPreview">
             <i class="el-icon-edit" v-show="isShow"></i>
             <i class="el-icon-help" v-show="!isShow"></i>
           </span>
-        </div>
-        <div class="note-title">
-          <input type="text" v-model="curNoteId.title" @input="updateNotes" placeholder="请在此输入标题...."
-                 @keydown="statusText = '正在输入...'"></input>
-        </div>
-        <div class="editor">
-      <textarea v-show="!isShowPreview" v-model="curNoteId.content" @input="updateNotes" placeholder="输入内容, 支持 markdown 语法"
+      </div>
+      <div class="note-title">
+        <input type="text" v-model="curNoteId.title" @input="updateNotes" placeholder="请在此输入标题...."
+               @keydown="statusText = '正在输入...'"></input>
+      </div>
+      <div class="editor">
+      <textarea v-show="!isShowPreview" v-model="curNoteId.content" @input="updateNotes"
+                placeholder="输入内容, 支持 markdown 语法"
                 @keydown="statusText = '正在输入...'">
       </textarea>
-          <div class="preview markdown-body" v-show="isShowPreview" v-html="previewContent">
-
-          </div>
+        <div class="preview markdown-body" v-show="isShowPreview" v-html="previewContent">
+        </div>
         </div>
       </div>
     </div>
@@ -53,7 +51,7 @@
 import NoteSidebar from "./common/NoteSidebar";
 import Common from '@/helpers/common.js';
 import MarkdownIt from 'markdown-it'
-import { mapActions, mapGetters ,mapMutations} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 let md = new MarkdownIt()
 export default {
@@ -64,11 +62,11 @@ export default {
     return {
       statusText: '笔记未改动',
       isShowPreview: false,
-      isShow:true
+      isShow: true
     }
   },
   created() {
-    this.checkLogin({ path: '/login' })
+    this.checkLogin({path: '/login'})
     // Auth.getInfo().then(res => {
     //   if (!res.isLogin) {
     //     this.$router.push({path: '/'})
@@ -80,16 +78,15 @@ export default {
   },
 
 
-
-  computed:{
-    previewContent(){//markdown文档
-      return  md.render(this.curNoteId.content || '')
+  computed: {
+    previewContent() {//markdown文档
+      return md.render(this.curNoteId.content || '')
     },
-      ...mapGetters([
-        'notes',
-        'curNoteId',
-        'curBookId'
-      ])
+    ...mapGetters([
+      'notes',
+      'curNoteId',
+      'curBookId'
+    ])
   },
 
 
@@ -106,8 +103,8 @@ export default {
 
 
     updateNotes: Common.debounce(function () {//不能用箭头函数，因为没有this
-      if (!this.curNoteId.id) return{}
-        this.updateNote({ noteId: this.curNoteId.id, title: this.curNoteId.title, content: this.curNoteId.content })
+      if (!this.curNoteId.id) return {}
+      this.updateNote({noteId: this.curNoteId.id, title: this.curNoteId.title, content: this.curNoteId.content})
         .then(res => {
           this.statusText = '已保存'
         }).catch(res => {
@@ -116,9 +113,9 @@ export default {
     }, 1500),
 
     deleteNotes() {
-      this.deleteNote({noteId:this.curNoteId.id})
+      this.deleteNote({noteId: this.curNoteId.id})
         .then(data => {
-          this.$router.replace({ path: '/note' })
+          this.$router.replace({path: '/note'})
         })
       // Notes.deleteNote({noteId: this.curNotes.id})//删除数据库中的数据
       //   .then(res => {
@@ -127,13 +124,13 @@ export default {
       //     this.$router.replace({path: '/note'})
       //   })
     },
-    showPreview(){
+    showPreview() {
       this.isShowPreview = !this.isShowPreview
       this.isShow = !this.isShow
     }
   },
   beforeRouteUpdate(to, from, next) {
-    this.setCurNote({curNoteId:to.query.noteId})
+    this.setCurNote({curNoteId: to.query.noteId})
     //this.curNotes = this.notes.find(note => note.id == to.query.noteId) || {}
     next()
   }
@@ -148,7 +145,8 @@ export default {
   background-color: #ffffff;
   flex: 1;
 }
-.el-icon-edit ,.el-icon-help{
+
+.el-icon-edit, .el-icon-help {
   width: 1em;
   height: 1em;
   float: right;
@@ -156,6 +154,7 @@ export default {
   font-size: 18px;
   cursor: pointer;
 }
+
 .iconfont {
   width: 1em;
   height: 1em;
@@ -184,7 +183,6 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
-
   .note-detail-ct {
     height: 100%;
   }
