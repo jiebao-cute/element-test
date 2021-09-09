@@ -2,9 +2,9 @@
   <div id="note" class="detail">
     <NoteSidebar @update:notes="val => notes = val"/>
     <div class="note-detail">
-      <div class="note-empty" v-show="!curNoteId.id">
-        <i class="el-icon-reading"></i>
-        在左侧选择或添加笔记
+      <div class="note-empty" v-show="!curBookId.id">请创建笔记本后</div>
+      <div class="note-empty" v-show="!curNoteId.id">选择或创建笔记</div>
+
       </div>
       <div class="note-detail-ct" v-show="curNoteId.id">
         <div class="note-bar">
@@ -87,7 +87,8 @@ export default {
     },
       ...mapGetters([
         'notes',
-        'curNoteId'
+        'curNoteId',
+        'curBookId'
       ])
   },
 

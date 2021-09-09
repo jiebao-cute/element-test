@@ -1,7 +1,8 @@
 <template>
 <div class="note-sidebar">
-  <span class=" btn add-note" @click="addNotes">添加笔记</span>
-  <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
+  <span class=" btn add-note" v-if="curBookId.id" @click="addNotes">添加笔记</span>
+  <span v-if="!curBookId.id" class="notebook-title">无笔记本</span>
+  <el-dropdown v-if="curBookId.id" class="notebook-title" @command="handleCommand" placement="bottom">
   <span class="el-dropdown-link" >
     {{curBookId.title}}<i class="el-icon-arrow-down el-icon--right"></i>
   </span>
@@ -39,7 +40,7 @@ export default {
     this.getNotebooks()
       .then(()=>{
         this.setCurBook({curBookId:this.$route.query.notebookId})
-        return this.getNotes({ notebookId: this.curBookId.id})
+        if(this.curBookId.id) return this.getNotes({ notebookId: this.curBookId.id})
       }).then(()=>{
         this.setCurNote({ curNoteId: this.$route.query.noteId })
         this.$router.replace({
