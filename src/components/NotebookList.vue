@@ -12,7 +12,7 @@
       <div class="layout">
         <h3>笔记列表({{ notebooks.length }})</h3>
         <div class="book-list">
-          <router-link :to="{path:`/note?notebookId=${notebooks.id}`}" class="notebook" v-for="notebooks  in notebooks" :key="notebooks.id">
+          <router-link :to="`/note?notebookId=${notebooks.id}`" class="notebook" v-for="notebooks  in notebooks" :key="notebooks.id">
             <div>
               <span>
               <svg class='iconfont icon-notebook'>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import Auth from '@/apis/auth.js'
 import { mapState, mapActions, mapGetters } from 'vuex'
 
 
@@ -43,13 +44,7 @@ export default {
   },
   created() {
     this.checkLogin({ path: '/login' })
-    // Auth.getInfo().then(res => {
-    //   if (!res.isLogin) {
-    //     this.$router.push({path: '/'})
-    //   }
-    // })
     this.getNotebooks()
-
   },
   computed: {
     //放在计算属性里面，只要notebooks变化就可以重新计算

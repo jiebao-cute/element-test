@@ -27,7 +27,7 @@ const actions = {
   },
   logout({commit}){
     return Auth.logout()
-      .then(res => {
+      .then( res => {
         commit ('setUser',{user: null})
       }
     )
@@ -39,7 +39,8 @@ const actions = {
       })
   },
 
-  checkLogin({ commit }, payload) {
+  checkLogin({ commit, state }, payload) {
+    if(state.user !== null) return Promise.resolve()
     return Auth.getInfo()
       .then(res => {
         if(!res.isLogin) {

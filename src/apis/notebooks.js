@@ -10,12 +10,12 @@ const URL = {
 export default {
   getAll() {
     return new Promise((resolve, reject) => {
-      return request(URL.GET)
+        request(URL.GET)
         .then(res => {
-        res.data = res.data.sort(function (a, b) {
+          res.data = res.data.sort(function (a, b) {
           return a.createdAt < b.createdAt ? 1 : -1
         })
-        res.data.forEach(notebook => {//后台时间的处理，只有刷新页面时才有
+          res.data.forEach(notebook => {//后台时间的处理，只有刷新页面时才有
           notebook.createdAtFriendly = friendlyDate(notebook.createdAt)
           notebook.updatedAtFriendly = friendlyDate(notebook.updatedAt)
         })
