@@ -17,6 +17,8 @@ const  URL = {
     return request(URL.LOGOUT)
    },
    getInfo(){
+    console.log("---发验证请求了");
+    console.log(URL.GET_INFO)
     return request(URL.GET_INFO)
    }
  }

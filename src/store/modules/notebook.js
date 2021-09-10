@@ -46,8 +46,11 @@ const mutations = {
 
 const actions = {
   getNotebooks({commit}){
+    console.log("获取notebooks")
    return Notebook.getAll()
       .then(res => {
+        console.log("---");
+        console.log(res);
         commit('setNotebooks', { notebooks: res.data })
       })
   },

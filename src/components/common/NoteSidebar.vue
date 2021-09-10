@@ -7,7 +7,7 @@
     {{curBookId.title}}<i class="el-icon-arrow-down el-icon--right"></i>
   </span>
     <el-dropdown-menu slot="dropdown" >
-      <el-dropdown-item :command="notebook.id" v-for="notebook in notebooks">{{notebook.title}}</el-dropdown-item>
+      <el-dropdown-item :command="notebook.id" v-for="notebook in notebooks" :key="notebook.id">{{notebook.title}}</el-dropdown-item>
       <el-dropdown-item command="trash">回收站</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>

@@ -12,18 +12,18 @@
       <div class="layout">
         <h3>笔记列表({{ notebooks.length }})</h3>
         <div class="book-list">
-          <router-link :to="`/note?notebookId=${notebooks.id}`" class="notebook" v-for="notebooks  in notebooks" :key="notebooks.id">
+          <router-link :to="`/note?notebookId=${notebook.id}`" class="notebook" v-for="notebook  in notebooks" :key="notebooks.id">
             <div>
               <span>
               <svg class='iconfont icon-notebook'>
                 <use xlink:href="#icon-biji"/>
               </svg>
                 </span>
-              {{ notebooks.title }}
-              <span>{{ notebooks.noteCounts }}</span>
-              <span class="action" @click.stop.prevent="onEdit(notebooks)">编辑</span>
-              <span class="action" @click.stop.prevent="onDelete(notebooks)">删除</span>
-              <span class="data">{{ notebooks.createdAtFriendly }}</span>
+              {{ notebook.title }}
+              <span>{{ notebook.noteCounts }}</span>
+              <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
+              <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
+              <span class="data">{{ notebook.createdAtFriendly }}</span>
             </div>
           </router-link>
         </div>
@@ -34,8 +34,10 @@
 
 <script>
 import Auth from '@/apis/auth.js'
+import Notebooks from '@/apis/notebooks.js'
 import { mapState, mapActions, mapGetters } from 'vuex'
-
+window.Auth = Auth
+window.Notebooks = Notebooks
 
 export default {
   name: 'NotebookList',
@@ -43,6 +45,7 @@ export default {
     return {}
   },
   created() {
+    console.log("-----notebook")
     this.checkLogin({ path: '/login' })
     this.getNotebooks()
   },

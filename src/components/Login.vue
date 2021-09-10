@@ -62,7 +62,6 @@ export default {
       loginUser: 'login',
       registerUser: 'register'
     }),
-
     ShowRegister() {
       this.isShowLogin = false;
       this.isShowRegister = true;
@@ -86,6 +85,7 @@ export default {
         username: this.register.username,
         password: this.register.password
       }).then(() => {
+
         this.register.isError = false;
         this.register.notice = '';
         this.$router.push({path: 'notebooks'})
@@ -109,10 +109,13 @@ export default {
         username: this.login.username,
         password: this.login.password
       }).then(() => {
+        console.log("----登录成功了")
         this.login.isError = false;
         this.login.notice = '';
         this.$router.push({path: 'notebooks'})
       }).catch(data => {
+        console.group("---登录失败了")
+        console.log(data);
         this.login.isError = true;
         this.login.notice = data.msg;
       })

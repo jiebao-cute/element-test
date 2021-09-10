@@ -10,8 +10,11 @@ const URL = {
 export default {
   getAll() {
     return new Promise((resolve, reject) => {
+      console.log("开始了");
+      console.log(URL.GET)
         request(URL.GET)
         .then(res => {
+          console.log("成功了")
           res.data = res.data.sort(function (a, b) {
           return a.createdAt < b.createdAt ? 1 : -1
         })
@@ -21,6 +24,7 @@ export default {
         })
         resolve(res)
       }).catch(err => {
+          console.log("失败了")
         reject(err)
       })
     })
